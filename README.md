@@ -1,3 +1,1 @@
-# cs3250_group4
-add names if you can see this:
-- Jack Mahoney
+# Example for the JSON structure for a basic Chrome theme.
