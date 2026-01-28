@@ -4,7 +4,7 @@
     "name": "Cody Maverick Theme",
     "theme": {
       "images": {
-        "theme_ntp_background": "images/background.png"
+        "theme_ntp_background": "assets/background.png"
       },
       "colors": {
         "frame": [255, 255, 19],
