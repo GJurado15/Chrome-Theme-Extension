@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { width: 320px; font-family: 'Segoe UI', Tahoma, sans-serif; padding: 15px; background-color: #f9f9f9; }
+    h3 { text-align: center; color: #333; margin-top: 0; }
+    
+    .control-group { margin-bottom: 12px; }
+    label { display: block; font-size: 12px; font-weight: bold; color: #555; margin-bottom: 4px; }
+    select, input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    
+    button { 
+      width: 100%; padding: 10px; margin-top: 15px; 
+      background-color: #4285f4; color: white; border: none; 
+      border-radius: 4px; font-weight: bold; cursor: pointer; 
+    }
+    button:hover { background-color: #357ae8; }
+    
+    .instructions { font-size: 11px; color: #666; margin-top: 15px; background: #eee; padding: 8px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h3>Theme JSON Generator</h3>
+  
+  <div class="control-group">
+    <label>Theme Name:</label>
+    <input type="text" id="themeName" placeholder="e.g. Midnight Blue">
+  </div>
+
+  <div class="control-group">
+    <label>Frame Color:</label>
+    <select id="frameColor"></select>
+  </div>
+
+  <div class="control-group">
+    <label>Toolbar Color:</label>
+    <select id="toolbarColor"></select>
+  </div>
+
+  <div class="control-group">
+    <label>Background Color:</label>
+    <select id="bgColor"></select>
+  </div>
+
+  <button id="confirmBtn">Confirm & Download JSON</button>
+
+  <div class="instructions">
+    <strong>Next Steps:</strong>
+    <ol style="padding-left: 20px; margin: 5px 0;">
+      <li>Create a new folder on your PC.</li>
+      <li>Move the downloaded <code>manifest.json</code> into it.</li>
+      <li>Go to <code>chrome://extensions</code>.</li>
+      <li>Click "Load Unpacked" and select that folder.</li>
+    </ol>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
