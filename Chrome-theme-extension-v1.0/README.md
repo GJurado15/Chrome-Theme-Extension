@@ -32,7 +32,7 @@ Google Chrome allows you to load extensions and themes that are stored in a fold
 
 5. Load the Unpacked Theme Generated via the Extension
 - Return to chrome://extensions and click Load unpacked.
-- A file browser window will open. Navigate to the folder where you have stored your generated theme files (the folder containing the manifest.json file).
+- A file browser window will open. Navigate to the folder where you have stored your generated theme file (the folder containing the manifest.json file).
 - Select the folder and click Open or Select Folder.
 - Chrome will immediately apply the theme to your browser.
 - If there are no errors in your manifest file, you will see the new theme reflected in your browser tabs and toolbar.
