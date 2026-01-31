@@ -6,7 +6,7 @@ git clone https://github.com/GJurado15/The-Real-Group-0100/tree/ChromeThemeExamp
 
 Alternatively, you can download the repository as a ZIP file directly from GitHub and extract it to a folder of your choice.
 
-## Installing the Extension in Chrome
+## Installing and Using the Extension in Chrome
 
 Google Chrome allows you to load extensions and themes that are stored in a folder on your computer. This is known as loading an "unpacked" extension.
 
