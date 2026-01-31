@@ -13,7 +13,7 @@ Google Chrome allows you to load extensions and themes that are stored in a fold
 1. Access the Extensions Page
 
 - Open your Google Chrome browser.
-- In the address bar, type chrome://extensions/ and press Enter.
+- navigate to chrome://extensions/
 - Alternatively, click the three vertical dots in the top-right corner, select Extensions, and then click Manage Extensions.
 
 2. Enable Developer Mode
