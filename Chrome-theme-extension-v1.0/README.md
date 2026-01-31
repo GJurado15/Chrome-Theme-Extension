@@ -1,7 +1,7 @@
 # Chrome-theme-generator
 
 ## Getting the Code
-To get a copy of this repository on your local machine, you can use Git to clone it. Open your terminal or command prompt and run:
+To get a copy of this repository on your device, you can use Git to clone it. Open your terminal or command prompt and run:
 git clone https://github.com/jdm450/chrome-theme-generator.git
 
 Alternatively, you can download the repository as a ZIP file directly from GitHub and extract it to a folder of your choice.
