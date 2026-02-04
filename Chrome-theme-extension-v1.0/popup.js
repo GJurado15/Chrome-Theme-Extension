@@ -6,11 +6,16 @@ const COLORS = {
     'Green': [2, 81, 2],
     'Blue': [0, 0, 255],
     'Indigo': [75, 0, 130],
-    'Violet': [238, 130, 238]
+    'Violet': [238, 130, 238],
+    'Noir': [0, 0, 0],
+    'Home Depot': [238, 113, 37],
+    'MSU Red': [195, 0, 48],
+    'MSU Blue': [35, 79, 124]
   };
   
   // 2. Initialize Dropdowns
-  const dropdowns = ['frameColor', 'toolbarColor', 'bgColor'];
+  const dropdowns = ['frameColor', 'toolbarColor', 'bgColor', 'textColor'];
+ // const dropdowns = ['frameColor', 'toolbarColor', 'bgColor', 'textColor'];
   
   // Helper to populate a select element
   function populateSelect(elementId) {
@@ -34,6 +39,9 @@ const COLORS = {
     const frameRGB = COLORS[document.getElementById('frameColor').value];
     const toolbarRGB = COLORS[document.getElementById('toolbarColor').value];
     const bgRGB = COLORS[document.getElementById('bgColor').value];
+    //const textColorRGB = COLORS[document.getElementById('textColor').value];
+
+
   
     // Construct the Manifest Object
     // This is the exact JSON structure Chromium needs
@@ -47,6 +55,7 @@ const COLORS = {
           "frame": frameRGB,
           "toolbar": toolbarRGB,
           "ntp_background": bgRGB,
+          //"text_color": textColorRGB,
           "ntp_text": [0, 0, 0],
           "tab_text": [0, 0, 0],
           "tab_background_text": [255, 255, 255],
