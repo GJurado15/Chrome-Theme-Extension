@@ -26,3 +26,27 @@
 - `icons/README.md` - Icon setup instructions
 - `README.md` - Project documentation (updated)
 - `AI_ATTRIBUTION.md` - This file
+
+---
+
+**AI Tool**: Claude (Anthropic) - Claude Opus 4.5
+**Date**: February 4, 2026
+
+---
+
+## Prompts Given to Claude
+
+- "read everything in this directory and tell me what it does"
+- "I want to modify how users select their colors. Can you locate exactly where that happens in this code"
+- "I want to implement a color picker in the form of a color wheel. What would be the easiest way to do this?"
+- "let's try the native input first"
+- "help me commit and create a PR"
+
+---
+
+## Files Modified by AI
+
+- `Chrome-theme-extension-v1.0/popup.html` - Replaced `<select>` dropdowns with `<input type="color">` pickers
+- `Chrome-theme-extension-v1.0/popup.js` - Removed preset color palette, added `hexToRgb()` function, connected text color to theme output
+- `Chrome-theme-extension-v1.0/icon128.png` - Copied from icons/ to fix manifest loading error
+- `AI_ATTRIBUTION.md` - Updated with this session's attribution
