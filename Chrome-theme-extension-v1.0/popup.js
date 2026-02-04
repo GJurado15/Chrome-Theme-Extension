@@ -1,45 +1,22 @@
-// 1. Define the ROYGBIV Palette (Same RGB values as your Node script)
-const COLORS = {
-    'Red': [187, 1, 0],
-    'Orange': [255, 165, 0],
-    'Yellow': [252, 222, 3],
-    'Green': [2, 81, 2],
-    'Blue': [0, 0, 255],
-    'Indigo': [75, 0, 130],
-    'Violet': [238, 130, 238],
-    'Noir': [0, 0, 0],
-    'Home Depot': [238, 113, 37],
-    'MSU Red': [195, 0, 48],
-    'MSU Blue': [35, 79, 124]
-  };
-  
-  // 2. Initialize Dropdowns
-  const dropdowns = ['frameColor', 'toolbarColor', 'bgColor', 'textColor'];
- // const dropdowns = ['frameColor', 'toolbarColor', 'bgColor', 'textColor'];
-  
-  // Helper to populate a select element
-  function populateSelect(elementId) {
-    const select = document.getElementById(elementId);
-    Object.keys(COLORS).forEach(colorName => {
-      const option = document.createElement('option');
-      option.value = colorName;
-      option.textContent = colorName;
-      select.appendChild(option);
-    });
-  }
-  
-  // Populate all three dropdowns
-  dropdowns.forEach(populateSelect);
-  
-  // 3. Handle the "Confirm" Button
+// Convert hex color to RGB array
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? [
+    parseInt(result[1], 16),
+    parseInt(result[2], 16),
+    parseInt(result[3], 16)
+  ] : [0, 0, 0];
+}
+
+// Handle the "Confirm" Button
   document.getElementById('confirmBtn').addEventListener('click', () => {
     const themeName = document.getElementById('themeName').value || "My Custom Theme";
     
-    // Get RGB arrays based on selection
-    const frameRGB = COLORS[document.getElementById('frameColor').value];
-    const toolbarRGB = COLORS[document.getElementById('toolbarColor').value];
-    const bgRGB = COLORS[document.getElementById('bgColor').value];
-    //const textColorRGB = COLORS[document.getElementById('textColor').value];
+    // Get RGB arrays from color picker values
+    const frameRGB = hexToRgb(document.getElementById('frameColor').value);
+    const toolbarRGB = hexToRgb(document.getElementById('toolbarColor').value);
+    const bgRGB = hexToRgb(document.getElementById('bgColor').value);
+    const textRGB = hexToRgb(document.getElementById('textColor').value);
 
 
   
@@ -55,9 +32,8 @@ const COLORS = {
           "frame": frameRGB,
           "toolbar": toolbarRGB,
           "ntp_background": bgRGB,
-          //"text_color": textColorRGB,
-          "ntp_text": [0, 0, 0],
-          "tab_text": [0, 0, 0],
+          "ntp_text": textRGB,
+          "tab_text": textRGB,
           "tab_background_text": [255, 255, 255],
           "button_background": toolbarRGB 
         }
