@@ -1,11 +1,16 @@
 {
-    "manifest_version": 3,
-    "name": "Simple Theme Generator",
-    "version": "1.0",
-    "description": "Generates a manifest.json for a custom theme.",
-    "action": {
-      "default_popup": "popup.html",
-      "default_title": "Create Theme JSON"
-    },
-    "permissions": ["downloads"]
-  }
+  "manifest_version": 3,
+  "name": "Real Simple Theme Generator",
+  "icons": {
+    "128": "icon128.png"
+  },
+  "version": "1.0",
+  "description": "Generates a manifest.json for a custom theme of your choosing.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Create Theme JSON"
+  },
+  "permissions": [
+    "downloads"
+  ]
+}
