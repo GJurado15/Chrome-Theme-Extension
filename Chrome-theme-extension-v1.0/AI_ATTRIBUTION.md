@@ -13,15 +13,16 @@
 - “Make the selection bars change to the color selected”
 - “Change the background of the html file to rgba(60, 60, 60)”
 - “Have it auto-switch”
+- “Change text font to Segoe UI Variable Display Semibold”
 - “Update readme and attribution”
 
 ---
 
 ## Files Generated or Modified with AI Assistance
 
-- `popup.html` – Updated UI styling, added automatic light/dark mode switching using `prefers-color-scheme`
+- `popup.html` – Updated UI styling, added automatic light/dark mode support, and applied system-native typography
 - `popup.js` – Implemented live color preview bars and automatic contrast handling
-- `README.md` – Updated documentation to reflect auto theme switching and UI behavior
+- `README.md` – Updated documentation to reflect typography, auto theme switching, and UI behavior
 - `AI_ATTRIBUTION.md` – Updated to reflect AI involvement in UX review, feature design, and documentation
 
 ---
@@ -33,7 +34,7 @@ ChatGPT was used as a collaborative support tool to:
 - Identify expectation mismatches related to Chrome security constraints
 - Suggest and implement UI improvements, including live color previews
 - Add automatic light/dark mode support using native browser features
-- Assist with JavaScript logic for dynamic styling and contrast handling
+- Assist with typography choices using system-native fonts
 - Draft and update project documentation and attribution language
 
 All final implementation decisions, code integration, testing, and validation were performed by the author. The author retains full responsibility for the correctness, originality, and functionality of the submitted work, in accordance with course academic integrity policies.

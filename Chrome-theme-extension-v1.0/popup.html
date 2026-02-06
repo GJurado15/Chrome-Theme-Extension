@@ -1,20 +1,30 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <style>
     /* ---------- Base (Light Mode) ---------- */
     body {
       width: 320px;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
       padding: 15px;
       background-color: #f9f9f9;
       color: #222;
+
+      font-family:
+        "Segoe UI Variable Display Semibold",
+        "Segoe UI Variable",
+        "Segoe UI",
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        sans-serif;
     }
 
     h3 {
       text-align: center;
       color: #333;
       margin-top: 0;
+      font-weight: 600;
     }
 
     .control-group {
@@ -27,7 +37,7 @@
     label {
       display: block;
       font-size: 12px;
-      font-weight: bold;
+      font-weight: 600;
       margin-bottom: 4px;
     }
 
@@ -48,12 +58,18 @@
       color: #fff;
       border: none;
       border-radius: 4px;
-      font-weight: bold;
+      font-weight: 600;
       cursor: pointer;
     }
 
-    button:hover { background-color: #357ae8; }
-    button:disabled { opacity: 0.85; cursor: default; }
+    button:hover {
+      background-color: #357ae8;
+    }
+
+    button:disabled {
+      opacity: 0.85;
+      cursor: default;
+    }
 
     .instructions {
       font-size: 12px;
@@ -62,6 +78,7 @@
       background: #eee;
       padding: 8px;
       border-radius: 4px;
+      font-weight: 500;
     }
 
     /* ---------- Dark Mode (Auto) ---------- */
@@ -90,30 +107,31 @@
     }
   </style>
 </head>
+
 <body>
   <h3>Chrome Theme Manifest Generator</h3>
 
-  <p style="font-size:12px;color:inherit;text-align:center;margin-top:-8px;">
+  <p style="font-size:12px;text-align:center;margin-top:-8px;">
     Creates a <strong>theme manifest file</strong>.<br>
     Does not automatically change your Chrome theme.
   </p>
 
-  <div class="control-group color-group" id="frameGroup">
+  <div class="control-group" id="frameGroup">
     <label for="frameColor">Frame Color</label>
     <input type="color" id="frameColor" value="#4285f4">
   </div>
 
-  <div class="control-group color-group" id="toolbarGroup">
+  <div class="control-group" id="toolbarGroup">
     <label for="toolbarColor">Toolbar Color</label>
     <input type="color" id="toolbarColor" value="#ffffff">
   </div>
 
-  <div class="control-group color-group" id="bgGroup">
+  <div class="control-group" id="bgGroup">
     <label for="bgColor">Background Color</label>
     <input type="color" id="bgColor" value="#f5f5f5">
   </div>
 
-  <div class="control-group color-group" id="textGroup">
+  <div class="control-group" id="textGroup">
     <label for="textColor">Text Color</label>
     <input type="color" id="textColor" value="#000000">
   </div>
@@ -133,4 +151,5 @@
 
   <script src="popup.js"></script>
 </body>
+
 </html>

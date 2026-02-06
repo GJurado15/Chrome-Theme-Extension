@@ -12,6 +12,7 @@ This tool focuses on simplicity and transparency: it **creates a theme manifest 
 - Displays **live color preview bars** that update as colors are selected
 - Automatically adjusts preview text color for readability
 - **Automatically adapts the popup UI to light or dark mode** based on the user’s system/Chrome theme
+- Uses **Segoe UI Variable Display Semibold** (with graceful fallbacks) for a clean, native UI appearance
 - Generates a valid Chrome theme `manifest.json`
 - Downloads the file locally to the user's computer
 
@@ -40,6 +41,7 @@ Chrome themes must be loaded manually due to browser security restrictions.
 - Preview text automatically switches between black and white for contrast
 - Popup UI **automatically switches between light and dark mode**
 - Dark mode detection uses the browser’s native `prefers-color-scheme`
+- Typography uses **Segoe UI Variable Display Semibold** when available, with system fallbacks
 - No user settings or additional permissions are required
 
 ---
@@ -47,7 +49,7 @@ Chrome themes must be loaded manually due to browser security restrictions.
 ## Project Files
 
 - `manifest.json` – Chrome extension configuration
-- `popup.html` – User interface with automatic light/dark mode support
+- `popup.html` – User interface with automatic light/dark mode and system-native typography
 - `popup.js` – Logic for live color previews and theme manifest generation
 - `icon128.png` – Extension icon
 - `README.md` – Project documentation
@@ -76,6 +78,6 @@ No user data is collected, stored, or transmitted.
 
 This project prioritizes clarity, safety, and adherence to Chrome extension policies.
 
-The popup UI automatically adapts to the user’s system and Chrome theme using the `prefers-color-scheme` media query, ensuring a consistent experience in both light and dark environments without requiring additional permissions or configuration.
+The popup UI automatically adapts to the user’s system and Chrome theme using the `prefers-color-scheme` media query, ensuring a consistent experience in both light and dark environments without requiring additional permissions.
 
-Live color preview bars were added to reduce user error and improve usability by providing immediate visual feedback.
+System-native typography was chosen to maintain a polished, platform-consistent appearance while avoiding external font dependencies.
