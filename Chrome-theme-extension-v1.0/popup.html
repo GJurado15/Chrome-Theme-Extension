@@ -89,4 +89,36 @@
 
   <div class="control-group">
     <label for="toolbarColor">Toolbar Color:</label>
-    <input type="color
+    <input type="color" id="toolbarColor" value="#ffffff">
+  </div>
+
+  <div class="control-group">
+    <label for="bgColor">Background Color:</label>
+    <input type="color" id="bgColor" value="#f5f5f5">
+  </div>
+
+  <div class="control-group">
+    <label for="textColor">Text Color:</label>
+    <input type="color" id="textColor" value="#000000">
+  </div>
+
+  <button id="confirmBtn">Download Theme Manifest</button>
+
+  <div class="instructions">
+    <strong>How to use your theme:</strong>
+    <ol style="padding-left: 20px; margin: 5px 0;">
+      <li>Create a new empty folder on your computer.</li>
+      <li>Move the downloaded <code>manifest.json</code> into that folder.</li>
+      <li>Open <code>chrome://extensions</code>.</li>
+      <li>Enable <strong>Developer Mode</strong> (top-right toggle).</li>
+      <li>Click <strong>Load unpacked</strong> and select the folder.</li>
+    </ol>
+    <p style="margin-top:6px;">
+      Chrome themes must be loaded manually due to browser security restrictions.
+    </p>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>
