@@ -2,19 +2,19 @@
 
 A lightweight Chrome extension that generates a valid `manifest.json` file for creating custom Chrome themes.
 
-This tool focuses on simplicity and transparency: it **creates a theme manifest file**, but does **not automatically apply themes**, due to Chrome security restrictions.
+This tool focuses on simplicity and transparency: it **creates and downloads a theme manifest file**, but does **not automatically apply themes**, due to Chrome security restrictions.
 
 ---
 
 ## What This Extension Does
 
-- Lets users choose theme colors using a simple popup UI
+- Lets users choose Chrome theme colors through a popup UI
 - Displays **live color preview bars** that update as colors are selected
 - Automatically adjusts preview text color for readability
 - **Automatically adapts the popup UI to light or dark mode** based on the user’s system/Chrome theme
 - Uses **Segoe UI Variable Display Semibold** (with graceful fallbacks) for a clean, native UI appearance
 - Generates a valid Chrome theme `manifest.json`
-- Downloads the file locally to the user's computer
+- **Reliably downloads the manifest using the Chrome Downloads API**
 
 ## What This Extension Does *Not* Do
 
@@ -25,13 +25,22 @@ This tool focuses on simplicity and transparency: it **creates a theme manifest 
 
 ## How to Use the Generated Theme
 
-1. Create a new empty folder on your computer
-2. Move the downloaded `manifest.json` into that folder
-3. Open `chrome://extensions` in Chrome
-4. Enable **Developer Mode** (toggle in the top-right corner)
-5. Click **Load unpacked** and select the folder
+1. Use the popup to select your desired theme colors.
+2. Click **Download Theme Manifest**.
+3. Choose where to save the downloaded `manifest.json`.
+4. Create a new empty folder on your computer and place the file inside it.
+5. Open `chrome://extensions` in Chrome.
+6. Enable **Developer Mode** (top-right toggle).
+7. Click **Load unpacked** and select the folder.
 
 Chrome themes must be loaded manually due to browser security restrictions.
+
+---
+
+## Technical Notes
+
+- The extension uses the **Chrome Downloads API** instead of a temporary link click to ensure reliable file downloads from extension popups.
+- This avoids browser timing issues where downloads may silently fail when Blob URLs are revoked too early.
 
 ---
 
@@ -39,7 +48,7 @@ Chrome themes must be loaded manually due to browser security restrictions.
 
 - `manifest.json` – Chrome extension configuration
 - `popup.html` – User interface with automatic light/dark mode and system-native typography
-- `popup.js` – Logic for live color previews and theme manifest generation
+- `popup.js` – Logic for live color previews and theme manifest generation/download
 - `icon128.png` – Extension icon
 - `README.md` – Project documentation
 - `AI_ATTRIBUTION.md` – AI usage disclosure
@@ -51,3 +60,19 @@ Chrome themes must be loaded manually due to browser security restrictions.
 - `downloads`: Required to save the generated `manifest.json` file locally
 
 No user data is collected, stored, or transmitted.
+
+---
+
+## Known Limitations
+
+- Chrome extensions cannot apply themes programmatically
+- Users must manually load the generated theme using **Load unpacked**
+- Theme changes only take effect after loading the theme as an unpacked extension
+
+---
+
+## Design Rationale
+
+This project prioritizes clarity, reliability, and adherence to Chrome extension policies.
+
+The download workflow uses Chrome’s official Downloads API to ensure consistent behavior across Chrome versions, while the UI focuses on immediate visual feedback and minimal user error.
