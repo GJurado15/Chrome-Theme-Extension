@@ -61,7 +61,7 @@ document.getElementById('confirmBtn').addEventListener('click', async () => {
   // Common colors
   const frameRGB = hexToRgb(document.getElementById('frameColor').value);
   const toolbarRGB = hexToRgb(document.getElementById('toolbarColor').value);
-  const textRGB = hexToRgb(document.getElementById('textColor').value);
+  const textRGB = [0, 0, 0]; // Default black
 
   // Background Processing
   const bgType = bgTypeSelect.value;
