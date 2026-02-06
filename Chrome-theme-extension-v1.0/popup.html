@@ -18,23 +18,25 @@
 
     .control-group {
       margin-bottom: 12px;
+      padding: 8px;
+      border-radius: 6px;
+      transition: background-color 0.2s ease;
     }
 
     label {
       display: block;
       font-size: 12px;
       font-weight: bold;
-      color: #555;
       margin-bottom: 4px;
     }
 
-    select,
-    input {
+    input[type="color"] {
       width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
+      height: 34px;
+      padding: 0;
+      border: none;
+      background: none;
+      cursor: pointer;
     }
 
     button {
@@ -54,8 +56,8 @@
     }
 
     button:disabled {
-      cursor: default;
       opacity: 0.85;
+      cursor: default;
     }
 
     .instructions {
@@ -77,28 +79,23 @@
     Does not automatically change your Chrome theme.
   </p>
 
-  <div class="control-group">
-    <label for="themeName">Theme Name:</label>
-    <input type="text" id="themeName" placeholder="e.g. Midnight Blue">
-  </div>
-
-  <div class="control-group">
-    <label for="frameColor">Frame Color:</label>
+  <div class="control-group color-group" id="frameGroup">
+    <label for="frameColor">Frame Color</label>
     <input type="color" id="frameColor" value="#4285f4">
   </div>
 
-  <div class="control-group">
-    <label for="toolbarColor">Toolbar Color:</label>
+  <div class="control-group color-group" id="toolbarGroup">
+    <label for="toolbarColor">Toolbar Color</label>
     <input type="color" id="toolbarColor" value="#ffffff">
   </div>
 
-  <div class="control-group">
-    <label for="bgColor">Background Color:</label>
+  <div class="control-group color-group" id="bgGroup">
+    <label for="bgColor">Background Color</label>
     <input type="color" id="bgColor" value="#f5f5f5">
   </div>
 
-  <div class="control-group">
-    <label for="textColor">Text Color:</label>
+  <div class="control-group color-group" id="textGroup">
+    <label for="textColor">Text Color</label>
     <input type="color" id="textColor" value="#000000">
   </div>
 
@@ -110,12 +107,9 @@
       <li>Create a new empty folder on your computer.</li>
       <li>Move the downloaded <code>manifest.json</code> into that folder.</li>
       <li>Open <code>chrome://extensions</code>.</li>
-      <li>Enable <strong>Developer Mode</strong> (top-right toggle).</li>
+      <li>Enable <strong>Developer Mode</strong>.</li>
       <li>Click <strong>Load unpacked</strong> and select the folder.</li>
     </ol>
-    <p style="margin-top:6px;">
-      Chrome themes must be loaded manually due to browser security restrictions.
-    </p>
   </div>
 
   <script src="popup.js"></script>

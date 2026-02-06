@@ -8,9 +8,11 @@ This tool focuses on simplicity and transparency: it **creates a theme manifest 
 
 ## What This Extension Does
 
-- Lets users choose theme colors using a simple popup UI
+- Allows users to select Chrome theme colors through a popup UI
+- Displays **live color preview bars** that update as colors are selected
+- Automatically adjusts preview text color for readability
 - Generates a valid Chrome theme `manifest.json`
-- Downloads the file locally to the user's computera
+- Downloads the file locally to the user's computer
 
 ## What This Extension Does *Not* Do
 
@@ -31,12 +33,23 @@ Chrome themes must be loaded manually due to browser security restrictions.
 
 ---
 
+## User Interface Features
+
+- **Live color preview bars** reflect the currently selected color
+- Preview text automatically switches between black and white for contrast
+- Color changes update instantly without requiring confirmation
+- Clean, minimal layout designed for clarity and ease of use
+
+---
+
 ## Project Files
 
 - `manifest.json` – Chrome extension configuration
 - `popup.html` – User interface for selecting theme options
-- `popup.js` – Logic for generating and downloading the theme manifest
+- `popup.js` – Logic for live color previews and theme manifest generation
 - `icon128.png` – Extension icon
+- `README.md` – Project documentation
+- `AI_ATTRIBUTION.md` – AI usage disclosure
 
 ---
 
@@ -52,11 +65,13 @@ No user data is collected, stored, or transmitted.
 
 - Chrome extensions cannot apply themes programmatically
 - Users must manually load the generated theme using **Load unpacked**
-- No live theme preview is provided
-- Customization is intentionally minimal to keep the tool easy to use
+- No full Chrome UI preview is available before loading the theme
+- Customization options are intentionally limited to core theme colors
 
 ---
 
 ## Design Rationale
 
-This project prioritizes clarity, safety, and adherence to Chrome extension policies. The manual workflow is a deliberate design tradeoff that avoids overreaching permissions while still giving users full control over their themes.
+This project prioritizes clarity, safety, and adherence to Chrome extension policies.  
+The manual loading workflow and limited permissions are intentional design tradeoffs that favor user control and transparency.  
+Live color preview bars were added to reduce user error and improve usability by providing immediate visual feedback.
