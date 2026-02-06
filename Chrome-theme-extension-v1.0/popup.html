@@ -7,6 +7,7 @@
     body {
       width: 320px;
       padding: 15px;
+      margin: 0;
       background-color: #f9f9f9;
       color: #222;
 
@@ -41,6 +42,16 @@
       margin-bottom: 4px;
     }
 
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      background: rgba(255, 255, 255, 0.95);
+      color: inherit;
+    }
+
     input[type="color"] {
       width: 100%;
       height: 34px;
@@ -55,7 +66,7 @@
       padding: 10px;
       margin-top: 15px;
       background-color: #4285f4;
-      color: #fff;
+      color: white;
       border: none;
       border-radius: 4px;
       font-weight: 600;
@@ -78,7 +89,6 @@
       background: #eee;
       padding: 8px;
       border-radius: 4px;
-      font-weight: 500;
     }
 
     /* ---------- Dark Mode (Auto) ---------- */
@@ -95,6 +105,11 @@
       .instructions {
         color: #e0e0e0;
         background: rgba(255, 255, 255, 0.08);
+      }
+
+      input[type="text"] {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.18);
       }
 
       button {
@@ -116,22 +131,27 @@
     Does not automatically change your Chrome theme.
   </p>
 
-  <div class="control-group" id="frameGroup">
+  <div class="control-group" style="background: rgba(0,0,0,0.00); padding: 0;">
+    <label for="themeName">Theme Name</label>
+    <input type="text" id="themeName" placeholder="e.g. Midnight Blue">
+  </div>
+
+  <div class="control-group color-group" id="frameGroup">
     <label for="frameColor">Frame Color</label>
     <input type="color" id="frameColor" value="#4285f4">
   </div>
 
-  <div class="control-group" id="toolbarGroup">
+  <div class="control-group color-group" id="toolbarGroup">
     <label for="toolbarColor">Toolbar Color</label>
     <input type="color" id="toolbarColor" value="#ffffff">
   </div>
 
-  <div class="control-group" id="bgGroup">
-    <label for="bgColor">Background Color</label>
+  <div class="control-group color-group" id="bgGroup">
+    <label for="bgColor">New Tab Background</label>
     <input type="color" id="bgColor" value="#f5f5f5">
   </div>
 
-  <div class="control-group" id="textGroup">
+  <div class="control-group color-group" id="textGroup">
     <label for="textColor">Text Color</label>
     <input type="color" id="textColor" value="#000000">
   </div>
@@ -144,12 +164,4 @@
       <li>Create a new empty folder on your computer.</li>
       <li>Move the downloaded <code>manifest.json</code> into that folder.</li>
       <li>Open <code>chrome://extensions</code>.</li>
-      <li>Enable <strong>Developer Mode</strong>.</li>
-      <li>Click <strong>Load unpacked</strong> and select the folder.</li>
-    </ol>
-  </div>
-
-  <script src="popup.js"></script>
-</body>
-
-</html>
+      <li>Enable <strong>Developer Mode</strong>

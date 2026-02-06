@@ -20,21 +20,15 @@
 
 ## Files Generated or Modified with AI Assistance
 
-- `popup.html` – Updated UI styling, added automatic light/dark mode support, and applied system-native typography
-- `popup.js` – Implemented live color preview bars and automatic contrast handling
-- `README.md` – Updated documentation to reflect typography, auto theme switching, and UI behavior
-- `AI_ATTRIBUTION.md` – Updated to reflect AI involvement in UX review, feature design, and documentation
+- `popup.html` – Updated UI text, styling, live preview bars, auto light/dark mode, and typography
+- `popup.js` – Implemented live preview behavior, manifest generation, and download feedback
+- `README.md` – Project documentation updates
+- `AI_ATTRIBUTION.md` – Updated to reflect AI involvement
 
 ---
 
 ## Scope of AI Assistance
 
-ChatGPT was used as a collaborative support tool to:
-- Review the Chrome extension for potential user experience issues
-- Identify expectation mismatches related to Chrome security constraints
-- Suggest and implement UI improvements, including live color previews
-- Add automatic light/dark mode support using native browser features
-- Assist with typography choices using system-native fonts
-- Draft and update project documentation and attribution language
+ChatGPT was used as a collaborative support tool to review UX issues, refine UI copy, implement visual preview behavior, add light/dark mode support, and draft/update documentation and attribution language.
 
 All final implementation decisions, code integration, testing, and validation were performed by the author. The author retains full responsibility for the correctness, originality, and functionality of the submitted work, in accordance with course academic integrity policies.
