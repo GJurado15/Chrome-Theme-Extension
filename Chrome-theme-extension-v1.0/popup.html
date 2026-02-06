@@ -2,11 +2,13 @@
 <html>
 <head>
   <style>
+    /* ---------- Base (Light Mode) ---------- */
     body {
       width: 320px;
       font-family: 'Segoe UI', Tahoma, sans-serif;
       padding: 15px;
       background-color: #f9f9f9;
+      color: #222;
     }
 
     h3 {
@@ -43,7 +45,7 @@
       padding: 10px;
       margin-top: 15px;
       background-color: #4285f4;
-      color: white;
+      color: #fff;
       border: none;
       border-radius: 4px;
       font-weight: bold;
@@ -55,18 +57,43 @@
 
     .instructions {
       font-size: 12px;
-      color: #666;
+      color: #555;
       margin-top: 15px;
       background: #eee;
       padding: 8px;
       border-radius: 4px;
+    }
+
+    /* ---------- Dark Mode (Auto) ---------- */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: rgba(60, 60, 60, 1);
+        color: #eaeaea;
+      }
+
+      h3 {
+        color: #ffffff;
+      }
+
+      .instructions {
+        color: #e0e0e0;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      button {
+        background-color: #4c8bf5;
+      }
+
+      button:hover {
+        background-color: #3b78e0;
+      }
     }
   </style>
 </head>
 <body>
   <h3>Chrome Theme Manifest Generator</h3>
 
-  <p style="font-size:12px;color:#666;text-align:center;margin-top:-8px;">
+  <p style="font-size:12px;color:inherit;text-align:center;margin-top:-8px;">
     Creates a <strong>theme manifest file</strong>.<br>
     Does not automatically change your Chrome theme.
   </p>

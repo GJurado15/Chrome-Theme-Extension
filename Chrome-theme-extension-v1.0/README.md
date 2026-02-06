@@ -11,6 +11,7 @@ This tool focuses on simplicity and transparency: it **creates a theme manifest 
 - Allows users to select Chrome theme colors through a popup UI
 - Displays **live color preview bars** that update as colors are selected
 - Automatically adjusts preview text color for readability
+- **Automatically adapts the popup UI to light or dark mode** based on the user’s system/Chrome theme
 - Generates a valid Chrome theme `manifest.json`
 - Downloads the file locally to the user's computer
 
@@ -37,15 +38,16 @@ Chrome themes must be loaded manually due to browser security restrictions.
 
 - **Live color preview bars** reflect the currently selected color
 - Preview text automatically switches between black and white for contrast
-- Color changes update instantly without requiring confirmation
-- Clean, minimal layout designed for clarity and ease of use
+- Popup UI **automatically switches between light and dark mode**
+- Dark mode detection uses the browser’s native `prefers-color-scheme`
+- No user settings or additional permissions are required
 
 ---
 
 ## Project Files
 
 - `manifest.json` – Chrome extension configuration
-- `popup.html` – User interface for selecting theme options
+- `popup.html` – User interface with automatic light/dark mode support
 - `popup.js` – Logic for live color previews and theme manifest generation
 - `icon128.png` – Extension icon
 - `README.md` – Project documentation
@@ -72,6 +74,8 @@ No user data is collected, stored, or transmitted.
 
 ## Design Rationale
 
-This project prioritizes clarity, safety, and adherence to Chrome extension policies.  
-The manual loading workflow and limited permissions are intentional design tradeoffs that favor user control and transparency.  
+This project prioritizes clarity, safety, and adherence to Chrome extension policies.
+
+The popup UI automatically adapts to the user’s system and Chrome theme using the `prefers-color-scheme` media query, ensuring a consistent experience in both light and dark environments without requiring additional permissions or configuration.
+
 Live color preview bars were added to reduce user error and improve usability by providing immediate visual feedback.
