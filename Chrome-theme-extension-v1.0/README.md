@@ -30,7 +30,7 @@ This tool focuses on simplicity and transparency: it **creates and downloads a t
 3. Choose where to save the downloaded `manifest.json`.
 4. Create a new empty folder on your computer and place the file inside it.
 5. Open `chrome://extensions` in Chrome.
-6. Enable **Developer Mode** (top-right toggle).
+6. Enable **Developer mode** (top-right toggle).
 7. Click **Load unpacked** and select the folder.
 
 Chrome themes must be loaded manually due to browser security restrictions.
@@ -40,15 +40,15 @@ Chrome themes must be loaded manually due to browser security restrictions.
 ## Technical Notes
 
 - The extension uses the **Chrome Downloads API** instead of a temporary link click to ensure reliable file downloads from extension popups.
-- This avoids browser timing issues where downloads may silently fail when Blob URLs are revoked too early.
+- The popup UI uses the browser’s native `prefers-color-scheme` media query for automatic light/dark mode.
 
 ---
 
 ## Project Files
 
-- `manifest.json` – Chrome extension configuration
-- `popup.html` – User interface with automatic light/dark mode and system-native typography
-- `popup.js` – Logic for live color previews and theme manifest generation/download
+- `manifest.json` – Chrome extension configuration (MV3)
+- `popup.html` – User interface (auto light/dark mode)
+- `popup.js` – Theme manifest generation + reliable download logic
 - `icon128.png` – Extension icon
 - `README.md` – Project documentation
 - `AI_ATTRIBUTION.md` – AI usage disclosure
@@ -68,11 +68,3 @@ No user data is collected, stored, or transmitted.
 - Chrome extensions cannot apply themes programmatically
 - Users must manually load the generated theme using **Load unpacked**
 - Theme changes only take effect after loading the theme as an unpacked extension
-
----
-
-## Design Rationale
-
-This project prioritizes clarity, reliability, and adherence to Chrome extension policies.
-
-The download workflow uses Chrome’s official Downloads API to ensure consistent behavior across Chrome versions, while the UI focuses on immediate visual feedback and minimal user error.

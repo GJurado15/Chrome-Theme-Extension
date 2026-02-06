@@ -6,20 +6,64 @@ function hexToRgb(hex) {
     : [0, 0, 0];
 }
 
-// Handle the "Confirm" Button
+// Determine readable text color (black or white)
+function getContrastColor(hex) {
+  const [r, g, b] = hexToRgb(hex);
+  const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+  return brightness > 140 ? "#000000" : "#ffffff";
+}
+
+// Apply background color to selection bar
+function bindColorPreview(inputId, groupId) {
+  const input = document.getElementById(inputId);
+  const group = document.getElementById(groupId);
+
+  function update() {
+    group.style.backgroundColor = input.value;
+    group.style.color = getContrastColor(input.value);
+  }
+
+  input.addEventListener("input", update);
+  update(); // initialize
+}
+
+// Bind all color inputs
+bindColorPreview("frameColor", "frameGroup");
+bindColorPreview("toolbarColor", "toolbarGroup");
+bindColorPreview("bgColor", "bgGroup");
+bindColorPreview("textColor", "textGroup");
+
+// Download helper (Chrome Downloads API)
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+
+  chrome.downloads.download(
+    {
+      url,
+      filename,
+      saveAs: true
+    },
+    (downloadId) => {
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+
+      if (chrome.runtime.lastError || !downloadId) {
+        console.error("Download error:", chrome.runtime.lastError?.message || "Unknown error");
+      }
+    }
+  );
+}
+
 document.getElementById("confirmBtn").addEventListener("click", () => {
   const btn = document.getElementById("confirmBtn");
   const originalText = btn.textContent;
 
-  const themeName = document.getElementById("themeName").value || "My Custom Theme";
+  const themeName = (document.getElementById("themeName").value || "").trim() || "My Custom Theme";
 
-  // Get RGB arrays from color picker values
   const frameRGB = hexToRgb(document.getElementById("frameColor").value);
   const toolbarRGB = hexToRgb(document.getElementById("toolbarColor").value);
   const bgRGB = hexToRgb(document.getElementById("bgColor").value);
   const textRGB = hexToRgb(document.getElementById("textColor").value);
 
-  // Construct the theme manifest (this is the JSON structure Chromium needs)
   const manifest = {
     manifest_version: 3,
     version: "1.0",
@@ -38,42 +82,17 @@ document.getElementById("confirmBtn").addEventListener("click", () => {
     }
   };
 
-  // Create the file as a blob URL
-  const jsonString = JSON.stringify(manifest, null, 2);
-  const blob = new Blob([jsonString], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-
-  // Use Chrome downloads API (more reliable than <a>.click in extension popups)
   btn.textContent = "Downloading...";
   btn.disabled = true;
 
-  chrome.downloads.download(
-    {
-      url,
-      filename: "manifest.json",
-      saveAs: true
-    },
-    (downloadId) => {
-      // Don't revoke immediately; give Chrome time to start the download
-      setTimeout(() => URL.revokeObjectURL(url), 5000);
+  const blob = new Blob([JSON.stringify(manifest, null, 2)], { type: "application/json" });
+  downloadBlob(blob, "manifest.json");
 
-      if (chrome.runtime.lastError || !downloadId) {
-        const msg = chrome.runtime.lastError?.message || "Download failed.";
-        console.error("Download error:", msg);
-
-        btn.textContent = "Download failed";
-        setTimeout(() => {
-          btn.textContent = originalText;
-          btn.disabled = false;
-        }, 2000);
-        return;
-      }
-
-      btn.textContent = "✓ Download started";
-      setTimeout(() => {
-        btn.textContent = originalText;
-        btn.disabled = false;
-      }, 2000);
-    }
-  );
+  setTimeout(() => {
+    btn.textContent = "✓ Download started";
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }, 1200);
+  }, 150);
 });

@@ -4,7 +4,7 @@
   <style>
     /* ---------- Base (Light Mode) ---------- */
     body {
-      width: 320px;
+      width: 330px;
       padding: 15px;
       margin: 0;
       background-color: #f9f9f9;
@@ -22,15 +22,16 @@
 
     h3 {
       text-align: center;
-      color: #333;
       margin-top: 0;
       font-weight: 600;
+      color: #333;
     }
 
     .control-group {
       margin-bottom: 12px;
-      padding: 8px;
-      border-radius: 6px;
+      padding: 10px;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.04);
       transition: background-color 0.2s ease;
     }
 
@@ -38,14 +39,14 @@
       display: block;
       font-size: 12px;
       font-weight: 600;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     input[type="text"] {
       width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      padding: 9px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.18);
       box-sizing: border-box;
       background: rgba(255,255,255,0.95);
       color: inherit;
@@ -53,35 +54,45 @@
 
     input[type="color"] {
       width: 100%;
-      height: 34px;
-      padding: 0;
+      height: 36px;
       border: none;
-      background: none;
+      background: transparent;
       cursor: pointer;
+      padding: 0;
     }
 
     button {
       width: 100%;
       padding: 10px;
-      margin-top: 15px;
+      margin-top: 6px;
       background-color: #4285f4;
       color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 10px;
       font-weight: 600;
       cursor: pointer;
     }
 
     button:hover { background-color: #357ae8; }
-    button:disabled { opacity: 0.85; cursor: default; }
+    button:disabled { opacity: 0.7; cursor: default; }
 
     .instructions {
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.06);
       font-size: 12px;
-      color: #555;
-      margin-top: 15px;
-      background: #eee;
-      padding: 8px;
-      border-radius: 4px;
+      line-height: 1.35;
+    }
+
+    .instructions code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+    }
+
+    .small {
+      margin-top: 6px;
+      opacity: 0.85;
     }
 
     /* ---------- Dark Mode (Auto) ---------- */
@@ -93,14 +104,17 @@
 
       h3 { color: #ffffff; }
 
-      .instructions {
-        color: #e0e0e0;
-        background: rgba(255, 255, 255, 0.08);
-      }
-
       input[type="text"] {
         background: rgba(255,255,255,0.08);
         border: 1px solid rgba(255,255,255,0.18);
+      }
+
+      .control-group {
+        background: rgba(255,255,255,0.08);
+      }
+
+      .instructions {
+        background: rgba(255,255,255,0.08);
       }
 
       button {
@@ -114,52 +128,52 @@
   </style>
 </head>
 <body>
-  <h3>Chrome Theme Manifest Generator</h3>
 
-  <p style="font-size:12px;text-align:center;margin-top:-8px;">
-    Creates a <strong>theme manifest file</strong>.<br>
-    Does not automatically change your Chrome theme.
+  <h3>Chrome Theme Generator</h3>
+
+  <p style="font-size:12px;text-align:center;margin-top:-6px;opacity:0.85;">
+    Generates a theme <code>manifest.json</code>. Chrome themes must be loaded manually.
   </p>
 
   <div class="control-group" style="background: rgba(0,0,0,0.00); padding: 0;">
     <label for="themeName">Theme Name</label>
-    <input type="text" id="themeName" placeholder="e.g. Midnight Blue">
+    <input type="text" id="themeName" placeholder="My Custom Theme" />
   </div>
 
   <div class="control-group color-group" id="frameGroup">
     <label for="frameColor">Frame Color</label>
-    <input type="color" id="frameColor" value="#4285f4">
+    <input type="color" id="frameColor" value="#4285f4" />
   </div>
 
   <div class="control-group color-group" id="toolbarGroup">
     <label for="toolbarColor">Toolbar Color</label>
-    <input type="color" id="toolbarColor" value="#ffffff">
+    <input type="color" id="toolbarColor" value="#ffffff" />
   </div>
 
   <div class="control-group color-group" id="bgGroup">
     <label for="bgColor">New Tab Background</label>
-    <input type="color" id="bgColor" value="#f5f5f5">
+    <input type="color" id="bgColor" value="#f5f5f5" />
   </div>
 
   <div class="control-group color-group" id="textGroup">
     <label for="textColor">Text Color</label>
-    <input type="color" id="textColor" value="#000000">
+    <input type="color" id="textColor" value="#000000" />
   </div>
 
   <button id="confirmBtn">Download Theme Manifest</button>
 
-  <div class="instructions">
-    <strong>How to use your theme:</strong>
-    <ol style="padding-left: 20px; margin: 5px 0;">
-      <li>Create a new empty folder on your computer.</li>
-      <li>Move the downloaded <code>manifest.json</code> into that folder.</li>
+  <div class="instructions" aria-label="How to apply theme instructions">
+    <strong>How to apply your theme in Chrome:</strong>
+    <ol style="padding-left: 18px; margin: 6px 0;">
+      <li>Create a folder (example: <code>my-theme</code>).</li>
+      <li>Put the downloaded <code>manifest.json</code> inside that folder.</li>
       <li>Open <code>chrome://extensions</code>.</li>
-      <li>Enable <strong>Developer Mode</strong> (top-right toggle).</li>
-      <li>Click <strong>Load unpacked</strong> and select the folder.</li>
+      <li>Enable <strong>Developer mode</strong> (top-right toggle).</li>
+      <li>Click <strong>Load unpacked</strong> and select your theme folder.</li>
     </ol>
-    <p style="margin-top:6px;">
-      Chrome themes must be loaded manually due to browser security restrictions.
-    </p>
+    <div class="small">
+      Note: Chrome themes must be loaded manually due to browser security restrictions.
+    </div>
   </div>
 
   <script src="popup.js"></script>
