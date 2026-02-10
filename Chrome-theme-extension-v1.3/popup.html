@@ -1,119 +1,517 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+  <meta charset="UTF-8">
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      width: 320px;
+      width: 400px;
       font-family: 'Segoe UI', Tahoma, sans-serif;
-      padding: 15px;
+      padding: 16px;
       background-color: #f9f9f9;
+      font-size: 13px;
+      color: #333;
     }
 
     h3 {
       text-align: center;
       color: #333;
-      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 18px;
     }
 
+    /* ===== Preview ===== */
+    .preview-container {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+      margin-bottom: 16px;
+    }
+
+    .preview-frame {
+      padding: 6px 6px 0;
+      transition: background-color 0.2s;
+    }
+
+    .preview-tabs {
+      display: flex;
+      gap: 2px;
+      padding: 0 4px;
+    }
+
+    .preview-tab {
+      padding: 5px 14px;
+      border-radius: 8px 8px 0 0;
+      font-size: 10px;
+      font-weight: 600;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    .preview-toolbar {
+      padding: 8px 10px;
+      margin: 0 2px;
+      font-size: 10px;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    .preview-content {
+      height: 80px;
+      margin: 0 4px 4px;
+      border-radius: 0 0 4px 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    /* ===== Form Controls ===== */
     .control-group {
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     label {
       display: block;
-      font-size: 12px;
-      font-weight: bold;
+      font-size: 11px;
+      font-weight: 600;
       color: #555;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     select,
-    input {
+    input[type="text"] {
       width: 100%;
-      padding: 8px;
+      padding: 7px 8px;
       border: 1px solid #ccc;
       border-radius: 4px;
-      box-sizing: border-box;
+      font-size: 12px;
+      background: #fff;
     }
 
-    button {
+    input[type="color"] {
       width: 100%;
+      height: 32px;
+      padding: 2px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 11px;
+      background: #fff;
+    }
+
+    /* Two-column layout */
+    .color-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .color-row .control-group {
+      flex: 1;
+    }
+
+    /* ===== Gradient Stops ===== */
+    .gradient-stop-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .gradient-stop-row input[type="color"] {
+      flex: 1;
+    }
+
+    .remove-stop {
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      margin: 0;
+      border: none;
+      background: #e53935;
+      color: white;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 24px;
+      text-align: center;
+    }
+
+    .add-stop-btn {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .add-stop-btn:hover {
+      background: #43a047;
+    }
+
+    /* ===== Buttons ===== */
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .btn-primary {
+      flex: 2;
       padding: 10px;
-      margin-top: 15px;
       background-color: #4285f4;
       color: white;
       border: none;
       border-radius: 4px;
       font-weight: bold;
       cursor: pointer;
+      font-size: 13px;
     }
 
-    button:hover {
+    .btn-primary:hover {
       background-color: #357ae8;
     }
 
+    .btn-secondary {
+      flex: 1;
+      padding: 10px;
+      background-color: #757575;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .btn-secondary:hover {
+      background-color: #616161;
+    }
+
+    .btn-small {
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 11px;
+    }
+
+    .btn-small:hover {
+      background: #f0f0f0;
+    }
+
+    .btn-danger {
+      padding: 4px 8px;
+      border: none;
+      border-radius: 4px;
+      background: #e53935;
+      color: white;
+      cursor: pointer;
+      font-size: 10px;
+    }
+
+    .btn-danger:hover {
+      background: #c62828;
+    }
+
+    /* ===== Import/Export Row ===== */
+    .io-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .io-row .btn-small {
+      flex: 1;
+    }
+
+    /* ===== Section Headers ===== */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 16px 0 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .section-header h4 {
+      font-size: 13px;
+      color: #444;
+      margin: 0;
+    }
+
+    /* ===== History ===== */
+    .history-list {
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 8px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+
+    .history-item-name {
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .history-item-date {
+      font-size: 10px;
+      color: #999;
+    }
+
+    .history-item-actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    .history-empty {
+      font-size: 11px;
+      color: #999;
+      font-style: italic;
+      padding: 8px;
+    }
+
+    /* ===== Toast ===== */
+    .toast {
+      position: fixed;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 1000;
+      transition: top 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .toast-show {
+      top: 10px;
+    }
+
+    .toast-success {
+      background: #4caf50;
+      color: white;
+    }
+
+    .toast-error {
+      background: #e53935;
+      color: white;
+    }
+
+    .toast-info {
+      background: #2196f3;
+      color: white;
+    }
+
+    /* ===== Collapsible ===== */
+    .collapsible-toggle {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .collapsible-toggle::before {
+      content: '\25B6 ';
+      font-size: 10px;
+      display: inline-block;
+      transition: transform 0.2s;
+    }
+
+    .collapsible-toggle.open::before {
+      transform: rotate(90deg);
+    }
+
+    .collapsible-content {
+      display: none;
+    }
+
+    .collapsible-content.open {
+      display: block;
+    }
+
+    /* ===== Instructions ===== */
     .instructions {
       font-size: 11px;
       color: #666;
-      margin-top: 15px;
+      margin-top: 12px;
       background: #eee;
       padding: 8px;
       border-radius: 4px;
+    }
+
+    .instructions ol {
+      padding-left: 20px;
+      margin: 5px 0;
     }
   </style>
 </head>
 
 <body>
+  <!-- Toast -->
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
   <h3>Theme Generator</h3>
 
-  <div class="control-group">
-    <label>Theme Name:</label>
-    <input type="text" id="themeName" placeholder="e.g. Midnight Blue">
+  <!-- Live Preview -->
+  <div class="preview-container" aria-label="Theme preview">
+    <div id="previewFrame" class="preview-frame" style="background-color: #4285f4;">
+      <div class="preview-tabs">
+        <div id="previewActiveTab" class="preview-tab" style="background-color: #ffffff; color: #000000;">Active Tab
+        </div>
+        <div id="previewInactiveTab" class="preview-tab" style="background-color: #d0d0d0; color: #000000;">Inactive
+        </div>
+      </div>
+      <div id="previewToolbar" class="preview-toolbar" style="background-color: #ffffff; color: #000000;">
+        &#10229; &#10230; &#10227; &nbsp; https://example.com
+      </div>
+      <div id="previewContent" class="preview-content" style="background-color: #f5f5f5; color: #000000;">
+        New Tab Page Preview
+      </div>
+    </div>
   </div>
 
+  <!-- Preset Themes -->
   <div class="control-group">
-    <label>Background Type:</label>
-    <select id="bgType">
+    <label for="presetSelect">Preset Theme:</label>
+    <select id="presetSelect" aria-label="Choose a preset theme">
+      <option value="">-- Custom --</option>
+      <option value="dark">Dark Mode</option>
+      <option value="ocean">Ocean Breeze</option>
+      <option value="sunset">Sunset Glow</option>
+      <option value="forest">Forest</option>
+      <option value="monochrome">Monochrome</option>
+    </select>
+  </div>
+
+  <!-- Theme Name -->
+  <div class="control-group">
+    <label for="themeName">Theme Name:</label>
+    <input type="text" id="themeName" placeholder="e.g. Midnight Blue" aria-label="Enter theme name">
+  </div>
+
+  <!-- Background Type -->
+  <div class="control-group">
+    <label for="bgType">Background Type:</label>
+    <select id="bgType" aria-label="Select background type">
       <option value="solid">Solid Color</option>
-      <option value="gradient">3-Color Gradient</option>
+      <option value="gradient">Gradient</option>
       <option value="image">Image Upload</option>
     </select>
   </div>
 
+  <!-- Solid Color -->
   <div id="solidColorGroup" class="control-group">
-    <label>Background Color:</label>
-    <input type="color" id="bgColor" value="#f5f5f5">
+    <label for="bgColor">Background Color:</label>
+    <input type="color" id="bgColor" value="#f5f5f5" aria-label="Background color">
   </div>
 
+  <!-- Gradient -->
   <div id="gradientColorGroup" class="control-group" style="display: none;">
-    <label>Gradient Colors (Top to Bottom):</label>
-    <input type="color" id="gradColor1" value="#ff0000" style="margin-bottom: 5px;">
-    <input type="color" id="gradColor2" value="#00ff00" style="margin-bottom: 5px;">
-    <input type="color" id="gradColor3" value="#0000ff">
+    <label for="gradDirection">Gradient Direction:</label>
+    <select id="gradDirection" aria-label="Gradient direction" style="margin-bottom: 6px;">
+      <option value="top-bottom">Top to Bottom</option>
+      <option value="left-right">Left to Right</option>
+      <option value="diagonal-tlbr">Diagonal (Top-Left to Bottom-Right)</option>
+      <option value="diagonal-trbl">Diagonal (Top-Right to Bottom-Left)</option>
+      <option value="radial">Radial (Center Out)</option>
+    </select>
+    <label>Color Stops:</label>
+    <div id="gradientStopsContainer"></div>
+    <button type="button" id="addStopBtn" class="add-stop-btn" aria-label="Add gradient color stop">+ Add Color
+      Stop</button>
   </div>
 
+  <!-- Image Upload -->
   <div id="imageUploadGroup" class="control-group" style="display: none;">
-    <label>Upload Background Image:</label>
-    <input type="file" id="bgImageFile" accept="image/*">
+    <label for="bgImageFile">Upload Background Image:</label>
+    <input type="file" id="bgImageFile" accept="image/*" aria-label="Upload background image">
   </div>
 
+  <!-- Frame & Toolbar Colors -->
+  <div class="color-row">
+    <div class="control-group">
+      <label for="frameColor">Frame Color:</label>
+      <input type="color" id="frameColor" value="#4285f4" aria-label="Frame color">
+    </div>
+    <div class="control-group">
+      <label for="toolbarColor">Toolbar Color:</label>
+      <input type="color" id="toolbarColor" value="#ffffff" aria-label="Toolbar color">
+    </div>
+  </div>
+
+  <!-- Tab Colors -->
+  <div class="color-row">
+    <div class="control-group">
+      <label for="activeTabColor">Active Tab:</label>
+      <input type="color" id="activeTabColor" value="#ffffff" aria-label="Active tab color">
+    </div>
+    <div class="control-group">
+      <label for="inactiveTabColor">Inactive Tab:</label>
+      <input type="color" id="inactiveTabColor" value="#d0d0d0" aria-label="Inactive tab color">
+    </div>
+  </div>
+
+  <!-- Text Color -->
   <div class="control-group">
-    <label>Frame Color:</label>
-    <input type="color" id="frameColor" value="#4285f4">
+    <label for="textColor">Text Color:</label>
+    <input type="color" id="textColor" value="#000000" aria-label="Text color">
   </div>
 
-  <div class="control-group">
-    <label>Toolbar Color:</label>
-    <input type="color" id="toolbarColor" value="#ffffff">
+  <!-- Action Buttons -->
+  <div class="btn-row">
+    <button id="confirmBtn" class="btn-primary" aria-label="Download theme">Download Theme</button>
+    <button id="resetBtn" class="btn-secondary" aria-label="Reset to defaults">Reset</button>
   </div>
 
+  <!-- Export / Import -->
+  <div class="io-row">
+    <button id="exportBtn" class="btn-small" aria-label="Export theme config">Export Config</button>
+    <button id="importBtn" class="btn-small" aria-label="Import theme config">Import Config</button>
+    <input type="file" id="importFileInput" accept=".json" style="display:none;" aria-hidden="true">
+  </div>
 
-  <button id="confirmBtn">Confirm & Download Theme</button>
+  <!-- Theme History -->
+  <div class="section-header">
+    <h4 id="historyToggle" class="collapsible-toggle" role="button" tabindex="0" aria-expanded="false">Saved Themes
+    </h4>
+    <button id="clearHistoryBtn" class="btn-danger" aria-label="Clear all saved themes">Clear All</button>
+  </div>
+  <div id="historyContent" class="collapsible-content">
+    <div id="historyList" class="history-list">
+      <div class="history-empty">No saved themes yet.</div>
+    </div>
+  </div>
 
+  <!-- Instructions -->
   <div class="instructions">
     <strong>Next Steps:</strong>
-    <ol style="padding-left: 20px; margin: 5px 0;">
+    <ol>
       <li>Create a new folder on your PC.</li>
       <li>Move the downloaded file (zip or json) into it.</li>
       <li>If it's a ZIP, unzip it inside that folder.</li>
