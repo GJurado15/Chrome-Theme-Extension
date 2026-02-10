@@ -4,7 +4,7 @@
 - Jack Mahoney
 - Dustin Jones
 - Moriah Lane
--Jorge Medrano
+- Jorge Medrano
 
 ## Project Overview
 A Chrome/Chromium browser extension that allows users to create, preview, and download custom browser themes with solid colors, gradients, or image backgrounds.
