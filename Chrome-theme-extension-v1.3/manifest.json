@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Theme Generator",
+  "icons": {
+    "16": "icons/icon128.png",
+    "48": "icons/icon128.png",
+    "128": "icons/icon128.png"
+  },
+  "version": "2.0",
+  "description": "Create, preview, and download custom Chrome themes.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Create Theme"
+  },
+  "permissions": [
+    "downloads",
+    "storage"
+  ]
+}
