@@ -50,3 +50,26 @@
 - `Chrome-theme-extension-v1.0/popup.js` - Removed preset color palette, added `hexToRgb()` function, connected text color to theme output
 - `Chrome-theme-extension-v1.0/icon128.png` - Copied from icons/ to fix manifest loading error
 - `AI_ATTRIBUTION.md` - Updated with this session's attribution
+
+---
+
+**AI Tool**: Claude (Anthropic) - Claude Opus 4.6
+**Date**: February 9, 2026
+
+---
+
+## Prompts Given to Claude
+
+- "Take a look at this chrome web extension. Is there anything else we could do with this to make it better? Make sure to check out the readme.md"
+- Reviewed Claude's suggestions and approved a list of improvements including: live preview, preset themes, text/tab color pickers, gradient direction control, dynamic gradient stops, input validation, toast notifications, reset button, theme history via chrome.storage, export/import config, and accessibility improvements
+- "yes go ahead" — directed Claude to implement all approved changes
+- "can you update the AI_ATTRIBUTION.md"
+
+---
+
+## Files Modified by AI
+
+- `Chrome-theme-extension-v1.3/manifest.json` - Bumped version to 2.0, added `storage` permission for theme history, added 16px and 48px icon entries
+- `Chrome-theme-extension-v1.3/popup.html` - Redesigned UI with wider layout (400px), added live browser preview mockup, preset theme selector, text color picker, active/inactive tab color pickers, gradient direction selector, dynamic gradient color stops with add/remove, reset button, export/import config buttons, collapsible saved themes section, toast notification element, and ARIA labels on all controls
+- `Chrome-theme-extension-v1.3/popup.js` - Full rewrite: removed duplicate `hexToRgb()`, added toast notification system, real-time live preview, 5 preset theme definitions, config get/apply/reset system, dynamic gradient stops (2-6), multi-direction gradient canvas rendering (linear + radial), input validation, theme history persistence with `chrome.storage.local`, JSON export/import, and enhanced Chrome theme manifest output with `frame_inactive`, `tab_text`, `tab_background_text`, `bookmark_text`, and `button_background` properties
+- `AI_ATTRIBUTION.md` - Updated with this session's attribution
