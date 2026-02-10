@@ -2,7 +2,7 @@
 
 ## Getting the Code
 To get a copy of this repository on your device, you can use Git to clone it. Open your terminal or command prompt and run:
-git clone https://github.com/GJurado15/The-Real-Group-0100/tree/ChromeThemeExamples/Chrome-theme-extension-v1.0.git
+git clone https://github.com/GJurado15/The-Real-Group-0100/tree/Jacks-branch/Chrome-theme-extension-v1.3.git
 
 Alternatively, you can download the repository as a ZIP file directly from GitHub and extract it to a folder of your choice.
 
