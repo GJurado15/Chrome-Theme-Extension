@@ -112,6 +112,22 @@
       background: #fff;
     }
 
+    .file-input-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .file-name-display {
+      font-size: 11px;
+      color: #666;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+
     /* Two-column layout */
     .color-row {
       display: flex;
@@ -449,8 +465,12 @@
 
   <!-- Image Upload -->
   <div id="imageUploadGroup" class="control-group" style="display: none;">
-    <label for="bgImageFile">Upload Background Image:</label>
-    <input type="file" id="bgImageFile" accept="image/*" aria-label="Upload background image">
+    <label>Upload Background Image:</label>
+    <div class="file-input-container">
+      <label for="bgImageFile" class="btn-small" style="display: inline-block;">Choose File</label>
+      <input type="file" id="bgImageFile" accept="image/*" style="display:none;">
+      <span id="fileNameDisplay" class="file-name-display">No file chosen</span>
+    </div>
   </div>
 
   <!-- Frame & Toolbar Colors -->

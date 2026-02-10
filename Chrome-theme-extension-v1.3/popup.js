@@ -1,5 +1,17 @@
 // ===== Utility Functions =====
 
+var currentBgImageData = null;
+var currentBgImageName = null;
+
+function dataURLtoBlob(dataurl) {
+  var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], { type: mime });
+}
+
 function hexToRgb(hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
@@ -61,6 +73,7 @@ var els = {
   gradStopsContainer: document.getElementById('gradientStopsContainer'),
   addStopBtn: document.getElementById('addStopBtn'),
   bgImageFile: document.getElementById('bgImageFile'),
+  fileNameDisplay: document.getElementById('fileNameDisplay'),
   frameColor: document.getElementById('frameColor'),
   toolbarColor: document.getElementById('toolbarColor'),
   activeTabColor: document.getElementById('activeTabColor'),
@@ -174,13 +187,8 @@ function updatePreview() {
       els.previewContent.style.background = 'linear-gradient(' + cssDir + ', ' + stops + ')';
     }
   } else if (bgType === 'image') {
-    var file = els.bgImageFile.files[0];
-    if (file) {
-      var reader = new FileReader();
-      reader.onload = function (e) {
-        els.previewContent.style.background = 'url(' + e.target.result + ') center/cover no-repeat';
-      };
-      reader.readAsDataURL(file);
+    if (currentBgImageData) {
+      els.previewContent.style.background = 'url(' + currentBgImageData + ') center/cover no-repeat';
     } else {
       els.previewContent.style.background = '#f5f5f5';
     }
@@ -192,7 +200,19 @@ function updatePreview() {
   document.getElementById(id).addEventListener('input', updatePreview);
 });
 els.gradDirection.addEventListener('change', updatePreview);
-els.bgImageFile.addEventListener('change', updatePreview);
+els.bgImageFile.addEventListener('change', function () {
+  var file = els.bgImageFile.files[0];
+  if (file) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      currentBgImageData = e.target.result;
+      currentBgImageName = file.name;
+      els.fileNameDisplay.textContent = file.name;
+      updatePreview();
+    };
+    reader.readAsDataURL(file);
+  }
+});
 
 // ===== Background Type Switching =====
 
@@ -228,7 +248,9 @@ function getCurrentConfig() {
     toolbarColor: els.toolbarColor.value,
     activeTabColor: els.activeTabColor.value,
     inactiveTabColor: els.inactiveTabColor.value,
-    textColor: els.textColor.value
+    textColor: els.textColor.value,
+    bgImageData: els.bgType.value === 'image' ? currentBgImageData : null,
+    bgImageName: els.bgType.value === 'image' ? currentBgImageName : null
   };
 }
 
@@ -248,6 +270,20 @@ function applyConfig(config) {
     els.solidGroup.style.display = config.bgType === 'solid' ? 'block' : 'none';
     els.gradientGroup.style.display = config.bgType === 'gradient' ? 'block' : 'none';
     els.imageGroup.style.display = config.bgType === 'image' ? 'block' : 'none';
+  }
+
+  if (config.bgType === 'image' && config.bgImageData) {
+    currentBgImageData = config.bgImageData;
+    currentBgImageName = config.bgImageName || 'background.png';
+    // Clear the file input effectively, as we are loading from data
+    els.bgImageFile.value = '';
+    els.fileNameDisplay.textContent = currentBgImageName;
+  } else if (config.bgType === 'image' && !config.bgImageData) {
+    // Case where type is image but no data (e.g. freshly switched or empty)
+    els.fileNameDisplay.textContent = 'No file chosen';
+  } else if (config.bgType !== 'image') {
+    // optional: reset current image data if switching away? 
+    // mostly better to keep it unless overwritten or explicitly reset
   }
   if (config.bgColor) els.bgColor.value = config.bgColor;
   if (config.gradColors && config.gradColors.length >= MIN_STOPS) {
@@ -272,13 +308,16 @@ els.resetBtn.addEventListener('click', function () {
   applyConfig(DEFAULTS);
   els.presetSelect.value = '';
   els.bgImageFile.value = '';
+  currentBgImageData = null;
+  currentBgImageName = null;
+  els.fileNameDisplay.textContent = 'No file chosen';
   showToast('Reset to defaults', 'info');
 });
 
 // ===== Validation =====
 
 function validate() {
-  if (els.bgType.value === 'image' && els.bgImageFile.files.length === 0) {
+  if (els.bgType.value === 'image' && !currentBgImageData) {
     showToast('Please select a background image.', 'error');
     return false;
   }
@@ -511,7 +550,9 @@ els.confirmBtn.addEventListener('click', async function () {
     if (bgType === 'gradient') {
       bgBlob = await createGradientBlob(gradientStops, els.gradDirection.value);
     } else if (bgType === 'image') {
-      bgBlob = els.bgImageFile.files[0];
+      if (currentBgImageData) {
+        bgBlob = dataURLtoBlob(currentBgImageData);
+      }
     } else {
       solidBgRGB = hexToRgb(els.bgColor.value);
     }
