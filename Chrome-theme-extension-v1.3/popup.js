@@ -375,11 +375,12 @@ function loadHistory() {
       chrome.storage.local.get('themeHistory', function (result) {
         resolve(result.themeHistory || []);
       });
-    } catch (e) {
+    } catch {
       resolve([]);
     }
   });
 }
+
 
 function saveToHistory(config) {
   loadHistory().then(function (history) {
@@ -509,7 +510,7 @@ els.importFileInput.addEventListener('change', function () {
       var config = JSON.parse(e.target.result);
       applyConfig(config);
       showToast('Config imported!', 'success');
-    } catch (err) {
+    } catch {
       showToast('Invalid config file.', 'error');
     }
   };
