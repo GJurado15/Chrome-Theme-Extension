@@ -1,0 +1,11 @@
+{
+  "source": {
+    "include": ["."],
+    "includePattern": ".+\\.(js|mjs)$",
+    "excludePattern": "(node_modules|docs|dist)"
+  },
+  "opts": {
+    "destination": "./docs",
+    "recurse": true
+  }
+}

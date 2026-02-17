@@ -14,6 +14,12 @@ function dataURLtoBlob(dataurl) {
 
 
 
+/**
+ * Description placeholder
+ *
+ * @param {*} message 
+ * @param {*} type 
+ */
 function showToast(message, type) {
   const toast = document.getElementById('toast');
   toast.textContent = message;
