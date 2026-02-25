@@ -5,7 +5,7 @@ import prettier from "eslint-config-prettier";
 export default [
   // Ignore vendor/minified output everywhere
   {
-    ignores: ["node_modules/**", "**/*.min.js", "jszip.min.js","**/*.test.js","**/prettify.js","**/lang-css.js","**/block-navigation.js","**/linenumber.js"]
+    ignores: ["node_modules/**", "**/*.min.js", "jszip.min.js", "**/*.test.js", "**/prettify.js", "**/lang-css.js", "**/block-navigation.js", "**/linenumber.js"]
   },
 
   js.configs.recommended,
