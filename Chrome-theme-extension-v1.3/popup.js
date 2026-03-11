@@ -148,7 +148,6 @@ var els = {
   confirmBtn: document.getElementById("confirmBtn"),
   resetBtn: document.getElementById("resetBtn"),
   exportBtn: document.getElementById("exportBtn"),
-  importBtn: document.getElementById("importBtn"),
   historyToggle: document.getElementById("historyToggle"),
   historyContent: document.getElementById("historyContent"),
   historyList: document.getElementById("historyList"),
@@ -286,10 +285,6 @@ function updatePreview() {
   }
 );
 els.gradDirection.addEventListener("change", updatePreview);
-
-document.getElementById("bgImageBtn").addEventListener("click", function () {
-  els.bgImageFile.click();
-});
 
 els.bgImageFile.addEventListener("change", function () {
   var file = els.bgImageFile.files[0];
@@ -631,10 +626,6 @@ els.exportBtn.addEventListener("click", function () {
   var filename = ThemeUtils.sanitizeFilename(config.name, "theme-config") + ".json";
   downloadFile(blob, filename);
   showToast("Config exported!", "success");
-});
-
-els.importBtn.addEventListener("click", function () {
-  els.importFileInput.click();
 });
 
 els.importFileInput.addEventListener("change", function () {

@@ -459,8 +459,8 @@
   <div id="imageUploadGroup" class="control-group" style="display: none;">
     <label>Background Image:</label>
     <div class="file-input-container">
-      <button type="button" id="bgImageBtn" class="btn-small">Choose File</button>
-      <input type="file" id="bgImageFile" accept="image/*" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+      <label for="bgImageFile" class="btn-small">Choose File</label>
+      <input type="file" id="bgImageFile" accept="image/*" style="display:none;">
       <span id="fileNameDisplay" class="file-name-display">No file chosen</span>
     </div>
   </div>
@@ -498,9 +498,9 @@
   <!-- Action Buttons -->
   <div class="btn-row">
     <button id="confirmBtn" class="btn-action" aria-label="Download theme">Download Theme</button>
-    <button id="importBtn" class="btn-action" aria-label="Import theme">Import Theme</button>
+    <label for="importFileInput" id="importBtn" class="btn-action" style="display:flex;align-items:center;justify-content:center;cursor:pointer;">Import Theme</label>
   </div>
-  <input type="file" id="importFileInput" accept=".json,.zip" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;" aria-hidden="true">
+  <input type="file" id="importFileInput" accept=".json,.zip" style="display:none;">
 
   <!-- Secondary Actions -->
   <div class="io-row">
