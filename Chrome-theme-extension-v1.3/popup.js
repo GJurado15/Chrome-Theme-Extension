@@ -137,7 +137,6 @@ var els = {
   gradDirection: document.getElementById("gradDirection"),
   gradStopsContainer: document.getElementById("gradientStopsContainer"),
   addStopBtn: document.getElementById("addStopBtn"),
-  bgImageFile: document.getElementById("bgImageFile"),
   fileNameDisplay: document.getElementById("fileNameDisplay"),
   frameColor: document.getElementById("frameColor"),
   toolbarColor: document.getElementById("toolbarColor"),
@@ -286,27 +285,38 @@ function updatePreview() {
   }
 );
 els.gradDirection.addEventListener("change", updatePreview);
-document.getElementById("bgImageBtn").addEventListener("click", function () {
-  els.bgImageFile.click();
+var dropZone = document.getElementById("imageDropZone");
+
+dropZone.addEventListener("dragover", function (e) {
+  e.preventDefault();
+  dropZone.classList.add("drag-over");
 });
 
-els.bgImageFile.addEventListener("change", function () {
-  var file = els.bgImageFile.files[0];
-  if (file) {
-    if (file.size > 2 * 1024 * 1024) {
-      showToast("Image must be under 2MB.", "error");
-      els.bgImageFile.value = "";
-      return;
-    }
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      state.bgImageData = e.target.result;
-      state.bgImageName = file.name;
-      els.fileNameDisplay.textContent = file.name;
-      updatePreview();
-    };
-    reader.readAsDataURL(file);
+dropZone.addEventListener("dragleave", function () {
+  dropZone.classList.remove("drag-over");
+});
+
+dropZone.addEventListener("drop", function (e) {
+  e.preventDefault();
+  dropZone.classList.remove("drag-over");
+  var file = e.dataTransfer.files[0];
+  if (!file || !file.type.startsWith("image/")) {
+    showToast("Please drop a valid image file.", "error");
+    return;
   }
+  if (file.size > 2 * 1024 * 1024) {
+    showToast("Image must be under 2MB.", "error");
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function (ev) {
+    state.bgImageData = ev.target.result;
+    state.bgImageName = file.name;
+    els.fileNameDisplay.textContent = file.name;
+    dropZone.classList.add("has-image");
+    updatePreview();
+  };
+  reader.readAsDataURL(file);
 });
 
 // ===== Background Type Switching =====
@@ -377,8 +387,8 @@ function applyConfig(config) {
   if (config.bgType === "image" && config.bgImageData) {
     state.bgImageData = config.bgImageData;
     state.bgImageName = config.bgImageName || "background.png";
-    els.bgImageFile.value = "";
     els.fileNameDisplay.textContent = state.bgImageName;
+    dropZone.classList.add("has-image");
   } else if (config.bgType === "image" && !config.bgImageData) {
     els.fileNameDisplay.textContent = "No file chosen";
   }
@@ -411,10 +421,10 @@ var DEFAULTS = {
 els.resetBtn.addEventListener("click", function () {
   applyConfig(DEFAULTS);
   els.presetSelect.value = "";
-  els.bgImageFile.value = "";
   state.bgImageData = null;
   state.bgImageName = null;
   els.fileNameDisplay.textContent = "No file chosen";
+  dropZone.classList.remove("has-image");
   showToast("Reset to defaults", "info");
 });
 
