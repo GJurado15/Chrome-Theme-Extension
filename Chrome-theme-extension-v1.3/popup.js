@@ -655,25 +655,30 @@ els.importFileInput.addEventListener("change", function () {
     };
     reader.readAsText(file);
   } else if (lowerName.endsWith(".zip")) {
-    // eslint-disable-next-line no-undef
-    JSZip.loadAsync(file).then(function (zip) {
-      var configFile = zip.file("theme-config.json");
-      if (!configFile) {
-        showToast("Re-download the theme to get an importable zip.", "error");
-        return;
-      }
-      configFile.async("string").then(function (text) {
-        try {
-          var config = JSON.parse(text);
-          applyConfig(config);
-          showToast("Theme imported from zip!", "success");
-        } catch {
-          showToast("Invalid config in zip.", "error");
+    showToast("Reading zip...", "info");
+    try {
+      // eslint-disable-next-line no-undef
+      JSZip.loadAsync(file).then(function (zip) {
+        var configFile = zip.file("theme-config.json");
+        if (!configFile) {
+          showToast("Re-download the theme to get an importable zip.", "error");
+          return;
         }
+        configFile.async("string").then(function (text) {
+          try {
+            var config = JSON.parse(text);
+            applyConfig(config);
+            showToast("Theme imported from zip!", "success");
+          } catch {
+            showToast("Invalid config in zip.", "error");
+          }
+        });
+      }).catch(function (e) {
+        showToast("Zip read failed: " + e.message, "error");
       });
-    }).catch(function () {
-      showToast("Could not read zip file.", "error");
-    });
+    } catch (e) {
+      showToast("JSZip error: " + e.message, "error");
+    }
   } else {
     showToast("Select a .json or .zip file.", "error");
   }
