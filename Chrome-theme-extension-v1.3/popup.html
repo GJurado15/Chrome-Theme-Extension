@@ -467,8 +467,8 @@
   <div id="imageUploadGroup" class="control-group" style="display: none;">
     <label>Upload Background Image:</label>
     <div class="file-input-container">
-      <label for="bgImageFile" class="btn-small" style="display: inline-block;">Choose File</label>
-      <input type="file" id="bgImageFile" accept="image/*" style="display:none;">
+      <button type="button" id="bgImageBtn" class="btn-small">Choose File</button>
+      <input type="file" id="bgImageFile" accept="image/*" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
       <span id="fileNameDisplay" class="file-name-display">No file chosen</span>
     </div>
   </div>

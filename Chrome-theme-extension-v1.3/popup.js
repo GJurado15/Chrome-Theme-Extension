@@ -286,6 +286,10 @@ function updatePreview() {
   }
 );
 els.gradDirection.addEventListener("change", updatePreview);
+document.getElementById("bgImageBtn").addEventListener("click", function () {
+  els.bgImageFile.click();
+});
+
 els.bgImageFile.addEventListener("change", function () {
   var file = els.bgImageFile.files[0];
   if (file) {
