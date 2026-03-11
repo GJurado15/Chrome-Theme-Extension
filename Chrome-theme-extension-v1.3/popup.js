@@ -288,8 +288,8 @@ els.gradDirection.addEventListener("change", updatePreview);
 els.bgImageFile.addEventListener("change", function () {
   var file = els.bgImageFile.files[0];
   if (file) {
-    if (file.size > 2 * 1024 * 1024) {
-      showToast("Image must be under 2MB.", "error");
+    if (file.size > 20 * 1024 * 1024) {
+      showToast("Image must be under 20MB.", "error");
       els.bgImageFile.value = "";
       return;
     }
