@@ -1,16 +1,15 @@
 // ===== Utility Functions =====
 
 /**
- * Currently loaded background image data URL (for bgType="image"), if any.
- * @type {string|null}
+ * Mutable UI state for the extension popup.
+ *
+ * @type {{ bgImageData: string|null, bgImageName: string|null, gradientStops: string[] }}
  */
-var currentBgImageData = null;
-
-/**
- * Filename of currently loaded background image (for display/history), if any.
- * @type {string|null}
- */
-var currentBgImageName = null;
+var state = {
+  bgImageData: null,
+  bgImageName: null,
+  gradientStops: ["#ff0000", "#00ff00", "#0000ff"],
+};
 
 /**
  * Theme configuration object shape for import/export/history.
@@ -72,54 +71,54 @@ function showToast(message, type) {
 var PRESETS = {
   dark: {
     name: "Dark Mode",
-    frame: "#1a1a2e",
-    toolbar: "#16213e",
-    text: "#e0e0e0",
-    activeTab: "#16213e",
-    inactiveTab: "#0f3460",
+    frameColor: "#1a1a2e",
+    toolbarColor: "#16213e",
+    textColor: "#e0e0e0",
+    activeTabColor: "#16213e",
+    inactiveTabColor: "#0f3460",
     bgType: "solid",
     bgColor: "#0a0a1a",
   },
   ocean: {
     name: "Ocean Breeze",
-    frame: "#006994",
-    toolbar: "#00a8cc",
-    text: "#ffffff",
-    activeTab: "#00a8cc",
-    inactiveTab: "#005f73",
+    frameColor: "#006994",
+    toolbarColor: "#00a8cc",
+    textColor: "#ffffff",
+    activeTabColor: "#00a8cc",
+    inactiveTabColor: "#005f73",
     bgType: "gradient",
     gradColors: ["#001f3f", "#006994", "#00b4d8"],
     gradDirection: "top-bottom",
   },
   sunset: {
     name: "Sunset Glow",
-    frame: "#c2185b",
-    toolbar: "#ff6f00",
-    text: "#ffffff",
-    activeTab: "#ff6f00",
-    inactiveTab: "#c2185b",
+    frameColor: "#c2185b",
+    toolbarColor: "#ff6f00",
+    textColor: "#ffffff",
+    activeTabColor: "#ff6f00",
+    inactiveTabColor: "#c2185b",
     bgType: "gradient",
     gradColors: ["#ff6f00", "#c2185b", "#4a148c"],
     gradDirection: "top-bottom",
   },
   forest: {
     name: "Forest",
-    frame: "#1b5e20",
-    toolbar: "#2e7d32",
-    text: "#ffffff",
-    activeTab: "#2e7d32",
-    inactiveTab: "#1b5e20",
+    frameColor: "#1b5e20",
+    toolbarColor: "#2e7d32",
+    textColor: "#ffffff",
+    activeTabColor: "#2e7d32",
+    inactiveTabColor: "#1b5e20",
     bgType: "gradient",
     gradColors: ["#1b5e20", "#4caf50", "#81c784"],
     gradDirection: "top-bottom",
   },
   monochrome: {
     name: "Monochrome",
-    frame: "#212121",
-    toolbar: "#424242",
-    text: "#ffffff",
-    activeTab: "#616161",
-    inactiveTab: "#303030",
+    frameColor: "#212121",
+    toolbarColor: "#424242",
+    textColor: "#ffffff",
+    activeTabColor: "#616161",
+    inactiveTabColor: "#303030",
     bgType: "solid",
     bgColor: "#1a1a1a",
   },
@@ -163,8 +162,6 @@ var els = {
 
 // ===== Gradient Stops =====
 
-/** @type {string[]} */
-var gradientStops = ["#ff0000", "#00ff00", "#0000ff"];
 var MIN_STOPS = 2;
 var MAX_STOPS = 6;
 
@@ -174,7 +171,7 @@ var MAX_STOPS = 6;
 function renderGradientStops() {
   els.gradStopsContainer.innerHTML = "";
 
-  gradientStops.forEach(function (color, i) {
+  state.gradientStops.forEach(function (color, i) {
     var row = document.createElement("div");
     row.className = "gradient-stop-row";
 
@@ -183,12 +180,12 @@ function renderGradientStops() {
     input.value = color;
     input.setAttribute("aria-label", "Gradient color stop " + (i + 1));
     input.addEventListener("input", function (e) {
-      gradientStops[i] = e.target.value;
+      state.gradientStops[i] = e.target.value;
       updatePreview();
     });
     row.appendChild(input);
 
-    if (gradientStops.length > MIN_STOPS) {
+    if (state.gradientStops.length > MIN_STOPS) {
       var removeBtn = document.createElement("button");
       removeBtn.type = "button";
       removeBtn.className = "remove-stop";
@@ -198,7 +195,7 @@ function renderGradientStops() {
         "click",
         (function (index) {
           return function () {
-            gradientStops.splice(index, 1);
+            state.gradientStops.splice(index, 1);
             renderGradientStops();
             updatePreview();
           };
@@ -211,12 +208,12 @@ function renderGradientStops() {
   });
 
   els.addStopBtn.style.display =
-    gradientStops.length >= MAX_STOPS ? "none" : "inline-block";
+    state.gradientStops.length >= MAX_STOPS ? "none" : "inline-block";
 }
 
 els.addStopBtn.addEventListener("click", function () {
-  if (gradientStops.length < MAX_STOPS) {
-    gradientStops.push("#888888");
+  if (state.gradientStops.length < MAX_STOPS) {
+    state.gradientStops.push("#888888");
     renderGradientStops();
     updatePreview();
   }
@@ -266,16 +263,16 @@ function updatePreview() {
       default:
         cssDir = "to bottom";
     }
-    var stops = gradientStops.join(", ");
+    var stops = state.gradientStops.join(", ");
     if (dir === "radial") {
       els.previewContent.style.background = "radial-gradient(circle, " + stops + ")";
     } else {
       els.previewContent.style.background = "linear-gradient(" + cssDir + ", " + stops + ")";
     }
   } else if (bgType === "image") {
-    if (currentBgImageData) {
+    if (state.bgImageData) {
       els.previewContent.style.background =
-        "url(" + currentBgImageData + ") center/cover no-repeat";
+        "url(" + state.bgImageData + ") center/cover no-repeat";
     } else {
       els.previewContent.style.background = "#f5f5f5";
     }
@@ -294,8 +291,8 @@ els.bgImageFile.addEventListener("change", function () {
   if (file) {
     var reader = new FileReader();
     reader.onload = function (e) {
-      currentBgImageData = e.target.result;
-      currentBgImageName = file.name;
+      state.bgImageData = e.target.result;
+      state.bgImageName = file.name;
       els.fileNameDisplay.textContent = file.name;
       updatePreview();
     };
@@ -336,15 +333,15 @@ function getCurrentConfig() {
     name: els.themeName.value,
     bgType: els.bgType.value,
     bgColor: els.bgColor.value,
-    gradColors: gradientStops.slice(),
+    gradColors: state.gradientStops.slice(),
     gradDirection: els.gradDirection.value,
     frameColor: els.frameColor.value,
     toolbarColor: els.toolbarColor.value,
     activeTabColor: els.activeTabColor.value,
     inactiveTabColor: els.inactiveTabColor.value,
     textColor: els.textColor.value,
-    bgImageData: els.bgType.value === "image" ? currentBgImageData : null,
-    bgImageName: els.bgType.value === "image" ? currentBgImageName : null,
+    bgImageData: els.bgType.value === "image" ? state.bgImageData : null,
+    bgImageName: els.bgType.value === "image" ? state.bgImageName : null,
   };
 }
 
@@ -357,11 +354,8 @@ function applyConfig(config) {
   if (config.name !== undefined) els.themeName.value = config.name;
   if (config.frameColor) els.frameColor.value = config.frameColor;
   if (config.toolbarColor) els.toolbarColor.value = config.toolbarColor;
-  if (config.activeTab) els.activeTabColor.value = config.activeTab;
   if (config.activeTabColor) els.activeTabColor.value = config.activeTabColor;
-  if (config.inactiveTab) els.inactiveTabColor.value = config.inactiveTab;
   if (config.inactiveTabColor) els.inactiveTabColor.value = config.inactiveTabColor;
-  if (config.text) els.textColor.value = config.text;
   if (config.textColor) els.textColor.value = config.textColor;
 
   if (config.bgType) {
@@ -372,17 +366,17 @@ function applyConfig(config) {
   }
 
   if (config.bgType === "image" && config.bgImageData) {
-    currentBgImageData = config.bgImageData;
-    currentBgImageName = config.bgImageName || "background.png";
+    state.bgImageData = config.bgImageData;
+    state.bgImageName = config.bgImageName || "background.png";
     els.bgImageFile.value = "";
-    els.fileNameDisplay.textContent = currentBgImageName;
+    els.fileNameDisplay.textContent = state.bgImageName;
   } else if (config.bgType === "image" && !config.bgImageData) {
     els.fileNameDisplay.textContent = "No file chosen";
   }
 
   if (config.bgColor) els.bgColor.value = config.bgColor;
   if (config.gradColors && config.gradColors.length >= MIN_STOPS) {
-    gradientStops = config.gradColors.slice();
+    state.gradientStops = config.gradColors.slice();
     renderGradientStops();
   }
   if (config.gradDirection) els.gradDirection.value = config.gradDirection;
@@ -409,8 +403,8 @@ els.resetBtn.addEventListener("click", function () {
   applyConfig(DEFAULTS);
   els.presetSelect.value = "";
   els.bgImageFile.value = "";
-  currentBgImageData = null;
-  currentBgImageName = null;
+  state.bgImageData = null;
+  state.bgImageName = null;
   els.fileNameDisplay.textContent = "No file chosen";
   showToast("Reset to defaults", "info");
 });
@@ -423,7 +417,7 @@ els.resetBtn.addEventListener("click", function () {
  * @returns {boolean}
  */
 function validate() {
-  if (els.bgType.value === "image" && !currentBgImageData) {
+  if (els.bgType.value === "image" && !state.bgImageData) {
     showToast("Please select a background image.", "error");
     return false;
   }
@@ -574,12 +568,10 @@ function renderHistoryList() {
         "click",
         (function (index) {
           return function () {
-            loadHistory().then(function (h) {
-              h.splice(index, 1);
-              chrome.storage.local.set({ themeHistory: h }, function () {
-                renderHistoryList();
-                showToast("Theme deleted", "info");
-              });
+            history.splice(index, 1);
+            chrome.storage.local.set({ themeHistory: history }, function () {
+              renderHistoryList();
+              showToast("Theme deleted", "info");
             });
           };
         })(i)
@@ -689,13 +681,12 @@ els.confirmBtn.addEventListener("click", async function () {
 
   try {
     if (bgType === "gradient") {
-      bgBlob = await createGradientBlob(gradientStops, els.gradDirection.value);
+      bgBlob = await createGradientBlob(state.gradientStops, els.gradDirection.value);
     } else if (bgType === "image") {
-      if (currentBgImageData) {
-        bgBlob = dataURLtoBlob(currentBgImageData);
+      if (state.bgImageData) {
+        bgBlob = dataURLtoBlob(state.bgImageData);
       }
     } else {
-      // ✅ FIX: was `textRGB(els.bgColor.value)` (incorrect)
       // eslint-disable-next-line no-undef
       solidBgRGB = ThemeUtils.hexToRgb(els.bgColor.value);
     }
