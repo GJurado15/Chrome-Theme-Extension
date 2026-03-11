@@ -701,30 +701,31 @@ els.confirmBtn.addEventListener("click", async function () {
     manifest.theme.colors.ntp_background = solidBgRGB;
   }
 
-  // Generate and download
+  // Pick a folder and write files directly into it
   try {
-    if (bgBlob) {
+    var dirHandle = await window.showDirectoryPicker({ mode: "readwrite" });
 
-      var zip = new JSZip();
-      zip.file("manifest.json", JSON.stringify(manifest, null, 2));
-      zip.file("background.png", bgBlob);
-      zip.file("theme-config.json", JSON.stringify(getCurrentConfig(), null, 2));
-      var content = await zip.generateAsync({ type: "blob" });
-      downloadFile(content, "theme.zip");
-    } else {
-      var jsonString = JSON.stringify(manifest, null, 2);
-      var blob = new Blob([jsonString], { type: "application/json" });
-      downloadFile(blob, "manifest.json");
+    var manifestHandle = await dirHandle.getFileHandle("manifest.json", { create: true });
+    var manifestWritable = await manifestHandle.createWritable();
+    await manifestWritable.write(JSON.stringify(manifest, null, 2));
+    await manifestWritable.close();
+
+    if (bgBlob) {
+      var bgHandle = await dirHandle.getFileHandle("background.png", { create: true });
+      var bgWritable = await bgHandle.createWritable();
+      await bgWritable.write(bgBlob);
+      await bgWritable.close();
     }
 
     saveToHistory(getCurrentConfig());
-    showToast("Theme downloaded! Opening extensions page...", "success");
+    showToast("Theme saved! Opening extensions page...", "success");
     setTimeout(function () {
       chrome.tabs.create({ url: "chrome://extensions" });
     }, 1500);
   } catch (e) {
-    console.error("Error generating theme:", e);
-    showToast("Error generating theme.", "error");
+    if (e.name === "AbortError") return;
+    console.error("Error saving theme:", e);
+    showToast("Error saving theme.", "error");
   }
 });
 
