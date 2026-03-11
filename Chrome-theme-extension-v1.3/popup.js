@@ -661,7 +661,11 @@ importDropZone.addEventListener("drop", function (e) {
   e.preventDefault();
   importDropZone.classList.remove("drag-over");
   var file = e.dataTransfer.files[0];
-  if (!file) return;
+  if (!file) {
+    showToast("No file detected in drop.", "error");
+    return;
+  }
+  showToast("Got: " + file.name + " (" + file.type + ")", "info");
 
   if (file.name.endsWith(".json")) {
     var reader = new FileReader();
