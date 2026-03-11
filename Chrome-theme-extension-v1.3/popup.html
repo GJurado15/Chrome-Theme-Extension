@@ -112,6 +112,22 @@
       background: #fff;
     }
 
+    #importDropZone {
+      border: 2px dashed #ccc;
+      border-radius: 4px;
+      padding: 14px;
+      text-align: center;
+      font-size: 11px;
+      color: #888;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    #importDropZone.drag-over {
+      border-color: #4285f4;
+      background: #e8f0fe;
+      color: #4285f4;
+    }
+
     #imageDropZone {
       border: 2px dashed #ccc;
       border-radius: 4px;
@@ -526,11 +542,10 @@
   <!-- Export / Import -->
   <div class="io-row">
     <button id="exportBtn" class="btn-small" aria-label="Export theme config">Export Config</button>
-    <button id="importBtn" class="btn-small" aria-label="Paste and import theme config">Import Config</button>
+    <button id="importBtn" class="btn-small" aria-label="Toggle import drop zone">Import Config</button>
   </div>
-  <div id="importPasteArea" style="display:none; margin-top:6px;">
-    <textarea id="importTextarea" rows="4" placeholder="Paste exported JSON config here..." style="width:100%;font-size:11px;padding:6px;border:1px solid #ccc;border-radius:4px;resize:vertical;" aria-label="Paste JSON config"></textarea>
-    <button id="importApplyBtn" class="btn-small" style="margin-top:4px;width:100%;">Apply</button>
+  <div id="importDropZone" style="display:none; margin-top:6px;" aria-label="Drop a .json or .zip theme file here">
+    Drop a .json or .zip theme file here
   </div>
 
   <!-- Theme History -->

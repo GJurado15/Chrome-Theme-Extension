@@ -642,23 +642,63 @@ els.exportBtn.addEventListener("click", function () {
   showToast("Config exported!", "success");
 });
 
-var importPasteArea = document.getElementById("importPasteArea");
-var importTextarea = document.getElementById("importTextarea");
+var importDropZone = document.getElementById("importDropZone");
 
 els.importBtn.addEventListener("click", function () {
-  importPasteArea.style.display = importPasteArea.style.display === "none" ? "block" : "none";
-  if (importPasteArea.style.display === "block") importTextarea.focus();
+  importDropZone.style.display = importDropZone.style.display === "none" ? "block" : "none";
 });
 
-document.getElementById("importApplyBtn").addEventListener("click", function () {
-  try {
-    var config = JSON.parse(importTextarea.value);
-    applyConfig(config);
-    importTextarea.value = "";
-    importPasteArea.style.display = "none";
-    showToast("Config imported!", "success");
-  } catch {
-    showToast("Invalid JSON config.", "error");
+importDropZone.addEventListener("dragover", function (e) {
+  e.preventDefault();
+  importDropZone.classList.add("drag-over");
+});
+
+importDropZone.addEventListener("dragleave", function () {
+  importDropZone.classList.remove("drag-over");
+});
+
+importDropZone.addEventListener("drop", function (e) {
+  e.preventDefault();
+  importDropZone.classList.remove("drag-over");
+  var file = e.dataTransfer.files[0];
+  if (!file) return;
+
+  if (file.name.endsWith(".json")) {
+    var reader = new FileReader();
+    reader.onload = function (ev) {
+      try {
+        var config = JSON.parse(ev.target.result);
+        applyConfig(config);
+        importDropZone.style.display = "none";
+        showToast("Config imported!", "success");
+      } catch {
+        showToast("Invalid JSON config.", "error");
+      }
+    };
+    reader.readAsText(file);
+  } else if (file.name.endsWith(".zip")) {
+    // eslint-disable-next-line no-undef
+    JSZip.loadAsync(file).then(function (zip) {
+      var configFile = zip.file("theme-config.json");
+      if (!configFile) {
+        showToast("No theme-config.json found in zip.", "error");
+        return;
+      }
+      configFile.async("string").then(function (text) {
+        try {
+          var config = JSON.parse(text);
+          applyConfig(config);
+          importDropZone.style.display = "none";
+          showToast("Config imported from zip!", "success");
+        } catch {
+          showToast("Invalid config in zip.", "error");
+        }
+      });
+    }).catch(function () {
+      showToast("Could not read zip file.", "error");
+    });
+  } else {
+    showToast("Drop a .json or .zip file.", "error");
   }
 });
 
@@ -742,6 +782,7 @@ els.confirmBtn.addEventListener("click", async function () {
       var zip = new JSZip();
       zip.file("manifest.json", JSON.stringify(manifest, null, 2));
       zip.file("background.png", bgBlob);
+      zip.file("theme-config.json", JSON.stringify(getCurrentConfig(), null, 2));
       var content = await zip.generateAsync({ type: "blob" });
       downloadFile(content, "theme.zip");
     } else {
