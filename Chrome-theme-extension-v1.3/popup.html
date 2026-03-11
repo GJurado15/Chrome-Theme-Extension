@@ -112,51 +112,20 @@
       background: #fff;
     }
 
-    #importDropZone {
-      border: 2px dashed #ccc;
-      border-radius: 4px;
-      padding: 14px;
-      text-align: center;
-      font-size: 11px;
-      color: #888;
-      transition: border-color 0.2s, background 0.2s;
-    }
-
-    #importDropZone.drag-over {
-      border-color: #4285f4;
-      background: #e8f0fe;
-      color: #4285f4;
-    }
-
-    #imageDropZone {
-      border: 2px dashed #ccc;
-      border-radius: 4px;
-      padding: 14px;
-      text-align: center;
-      font-size: 11px;
-      color: #888;
-      transition: border-color 0.2s, background 0.2s;
-    }
-
-    #imageDropZone.drag-over {
-      border-color: #4285f4;
-      background: #e8f0fe;
-      color: #4285f4;
-    }
-
-    #imageDropZone.has-image {
-      border-color: #4caf50;
-      color: #333;
+    .file-input-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
     }
 
     .file-name-display {
-      display: block;
       font-size: 11px;
       color: #666;
-      margin-top: 4px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      max-width: 200px;
     }
 
     /* Two-column layout */
@@ -218,8 +187,8 @@
       margin-top: 12px;
     }
 
-    .btn-primary {
-      flex: 2;
+    .btn-action {
+      flex: 1;
       padding: 10px;
       background-color: #4285f4;
       color: white;
@@ -230,24 +199,8 @@
       font-size: 13px;
     }
 
-    .btn-primary:hover {
+    .btn-action:hover {
       background-color: #357ae8;
-    }
-
-    .btn-secondary {
-      flex: 1;
-      padding: 10px;
-      background-color: #757575;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 12px;
-    }
-
-    .btn-secondary:hover {
-      background-color: #616161;
     }
 
     .btn-small {
@@ -497,8 +450,9 @@
   <!-- Image Upload -->
   <div id="imageUploadGroup" class="control-group" style="display: none;">
     <label>Background Image:</label>
-    <div id="imageDropZone" aria-label="Drag and drop an image here">
-      <span id="dropZoneText">Drag &amp; drop an image here</span>
+    <div class="file-input-container">
+      <button type="button" id="bgImageBtn" class="btn-small">Choose File</button>
+      <input type="file" id="bgImageFile" accept="image/*" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
       <span id="fileNameDisplay" class="file-name-display">No file chosen</span>
     </div>
   </div>
@@ -535,17 +489,15 @@
 
   <!-- Action Buttons -->
   <div class="btn-row">
-    <button id="confirmBtn" class="btn-primary" aria-label="Download theme">Download Theme</button>
-    <button id="resetBtn" class="btn-secondary" aria-label="Reset to defaults">Reset</button>
+    <button id="confirmBtn" class="btn-action" aria-label="Download theme">Download Theme</button>
+    <button id="importBtn" class="btn-action" aria-label="Import theme">Import Theme</button>
   </div>
+  <input type="file" id="importFileInput" accept=".json,.zip" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;" aria-hidden="true">
 
-  <!-- Export / Import -->
+  <!-- Secondary Actions -->
   <div class="io-row">
     <button id="exportBtn" class="btn-small" aria-label="Export theme config">Export Config</button>
-    <button id="importBtn" class="btn-small" aria-label="Toggle import drop zone">Import Config</button>
-  </div>
-  <div id="importDropZone" style="display:none; margin-top:6px;" aria-label="Drop a .json or .zip theme file here">
-    Drop a .json or .zip theme file here
+    <button id="resetBtn" class="btn-small" aria-label="Reset to defaults">Reset</button>
   </div>
 
   <!-- Theme History -->

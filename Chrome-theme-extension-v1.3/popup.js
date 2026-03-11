@@ -137,7 +137,9 @@ var els = {
   gradDirection: document.getElementById("gradDirection"),
   gradStopsContainer: document.getElementById("gradientStopsContainer"),
   addStopBtn: document.getElementById("addStopBtn"),
+  bgImageFile: document.getElementById("bgImageFile"),
   fileNameDisplay: document.getElementById("fileNameDisplay"),
+  importFileInput: document.getElementById("importFileInput"),
   frameColor: document.getElementById("frameColor"),
   toolbarColor: document.getElementById("toolbarColor"),
   activeTabColor: document.getElementById("activeTabColor"),
@@ -284,38 +286,28 @@ function updatePreview() {
   }
 );
 els.gradDirection.addEventListener("change", updatePreview);
-var dropZone = document.getElementById("imageDropZone");
 
-dropZone.addEventListener("dragover", function (e) {
-  e.preventDefault();
-  dropZone.classList.add("drag-over");
+document.getElementById("bgImageBtn").addEventListener("click", function () {
+  els.bgImageFile.click();
 });
 
-dropZone.addEventListener("dragleave", function () {
-  dropZone.classList.remove("drag-over");
-});
-
-dropZone.addEventListener("drop", function (e) {
-  e.preventDefault();
-  dropZone.classList.remove("drag-over");
-  var file = e.dataTransfer.files[0];
-  if (!file || !file.type.startsWith("image/")) {
-    showToast("Please drop a valid image file.", "error");
-    return;
+els.bgImageFile.addEventListener("change", function () {
+  var file = els.bgImageFile.files[0];
+  if (file) {
+    if (file.size > 2 * 1024 * 1024) {
+      showToast("Image must be under 2MB.", "error");
+      els.bgImageFile.value = "";
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      state.bgImageData = e.target.result;
+      state.bgImageName = file.name;
+      els.fileNameDisplay.textContent = file.name;
+      updatePreview();
+    };
+    reader.readAsDataURL(file);
   }
-  if (file.size > 2 * 1024 * 1024) {
-    showToast("Image must be under 2MB.", "error");
-    return;
-  }
-  var reader = new FileReader();
-  reader.onload = function (ev) {
-    state.bgImageData = ev.target.result;
-    state.bgImageName = file.name;
-    els.fileNameDisplay.textContent = file.name;
-    dropZone.classList.add("has-image");
-    updatePreview();
-  };
-  reader.readAsDataURL(file);
 });
 
 // ===== Background Type Switching =====
@@ -387,7 +379,6 @@ function applyConfig(config) {
     state.bgImageData = config.bgImageData;
     state.bgImageName = config.bgImageName || "background.png";
     els.fileNameDisplay.textContent = state.bgImageName;
-    dropZone.classList.add("has-image");
   } else if (config.bgType === "image" && !config.bgImageData) {
     els.fileNameDisplay.textContent = "No file chosen";
   }
@@ -420,10 +411,10 @@ var DEFAULTS = {
 els.resetBtn.addEventListener("click", function () {
   applyConfig(DEFAULTS);
   els.presetSelect.value = "";
+  els.bgImageFile.value = "";
   state.bgImageData = null;
   state.bgImageName = null;
   els.fileNameDisplay.textContent = "No file chosen";
-  dropZone.classList.remove("has-image");
   showToast("Reset to defaults", "info");
 });
 
@@ -642,30 +633,13 @@ els.exportBtn.addEventListener("click", function () {
   showToast("Config exported!", "success");
 });
 
-var importDropZone = document.getElementById("importDropZone");
-
 els.importBtn.addEventListener("click", function () {
-  importDropZone.style.display = importDropZone.style.display === "none" ? "block" : "none";
+  els.importFileInput.click();
 });
 
-importDropZone.addEventListener("dragover", function (e) {
-  e.preventDefault();
-  importDropZone.classList.add("drag-over");
-});
-
-importDropZone.addEventListener("dragleave", function () {
-  importDropZone.classList.remove("drag-over");
-});
-
-importDropZone.addEventListener("drop", function (e) {
-  e.preventDefault();
-  importDropZone.classList.remove("drag-over");
-  var file = e.dataTransfer.files[0];
-  if (!file) {
-    showToast("No file detected in drop.", "error");
-    return;
-  }
-  showToast("Got: " + file.name + " (" + file.type + ")", "info");
+els.importFileInput.addEventListener("change", function () {
+  var file = els.importFileInput.files[0];
+  if (!file) return;
 
   if (file.name.endsWith(".json")) {
     var reader = new FileReader();
@@ -673,7 +647,6 @@ importDropZone.addEventListener("drop", function (e) {
       try {
         var config = JSON.parse(ev.target.result);
         applyConfig(config);
-        importDropZone.style.display = "none";
         showToast("Config imported!", "success");
       } catch {
         showToast("Invalid JSON config.", "error");
@@ -692,7 +665,6 @@ importDropZone.addEventListener("drop", function (e) {
         try {
           var config = JSON.parse(text);
           applyConfig(config);
-          importDropZone.style.display = "none";
           showToast("Config imported from zip!", "success");
         } catch {
           showToast("Invalid config in zip.", "error");
@@ -702,8 +674,9 @@ importDropZone.addEventListener("drop", function (e) {
       showToast("Could not read zip file.", "error");
     });
   } else {
-    showToast("Drop a .json or .zip file.", "error");
+    showToast("Select a .json or .zip file.", "error");
   }
+  els.importFileInput.value = "";
 });
 
 // ===== Download File Helper =====
