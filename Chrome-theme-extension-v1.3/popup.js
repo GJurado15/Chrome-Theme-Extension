@@ -139,7 +139,6 @@ var els = {
   addStopBtn: document.getElementById("addStopBtn"),
   bgImageFile: document.getElementById("bgImageFile"),
   fileNameDisplay: document.getElementById("fileNameDisplay"),
-  importFileInput: document.getElementById("importFileInput"),
   frameColor: document.getElementById("frameColor"),
   toolbarColor: document.getElementById("toolbarColor"),
   activeTabColor: document.getElementById("activeTabColor"),
@@ -628,53 +627,6 @@ els.exportBtn.addEventListener("click", function () {
   showToast("Config exported!", "success");
 });
 
-els.importFileInput.addEventListener("change", function () {
-  var file = els.importFileInput.files[0];
-  if (!file) return;
-
-  var lowerName = file.name.toLowerCase();
-  if (lowerName.endsWith(".json")) {
-    var reader = new FileReader();
-    reader.onload = function (ev) {
-      try {
-        var config = JSON.parse(ev.target.result);
-        applyConfig(config);
-        showToast("Config imported!", "success");
-      } catch {
-        showToast("Invalid JSON config.", "error");
-      }
-    };
-    reader.readAsText(file);
-  } else if (lowerName.endsWith(".zip")) {
-    showToast("Reading zip...", "info");
-    try {
-      // eslint-disable-next-line no-undef
-      JSZip.loadAsync(file).then(function (zip) {
-        var configFile = zip.file("theme-config.json");
-        if (!configFile) {
-          showToast("Re-download the theme to get an importable zip.", "error");
-          return;
-        }
-        configFile.async("string").then(function (text) {
-          try {
-            var config = JSON.parse(text);
-            applyConfig(config);
-            showToast("Theme imported from zip!", "success");
-          } catch {
-            showToast("Invalid config in zip.", "error");
-          }
-        });
-      }).catch(function (e) {
-        showToast("Zip read failed: " + e.message, "error");
-      });
-    } catch (e) {
-      showToast("JSZip error: " + e.message, "error");
-    }
-  } else {
-    showToast("Select a .json or .zip file.", "error");
-  }
-  els.importFileInput.value = "";
-});
 
 // ===== Download File Helper =====
 
@@ -766,7 +718,10 @@ els.confirmBtn.addEventListener("click", async function () {
     }
 
     saveToHistory(getCurrentConfig());
-    showToast("Theme downloaded!", "success");
+    showToast("Theme downloaded! Opening extensions page...", "success");
+    setTimeout(function () {
+      chrome.tabs.create({ url: "chrome://extensions" });
+    }, 1500);
   } catch (e) {
     console.error("Error generating theme:", e);
     showToast("Error generating theme.", "error");
