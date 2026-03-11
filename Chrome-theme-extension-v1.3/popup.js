@@ -147,7 +147,6 @@ var els = {
   resetBtn: document.getElementById("resetBtn"),
   exportBtn: document.getElementById("exportBtn"),
   importBtn: document.getElementById("importBtn"),
-  importFileInput: document.getElementById("importFileInput"),
   historyToggle: document.getElementById("historyToggle"),
   historyContent: document.getElementById("historyContent"),
   historyList: document.getElementById("historyList"),
@@ -643,26 +642,24 @@ els.exportBtn.addEventListener("click", function () {
   showToast("Config exported!", "success");
 });
 
+var importPasteArea = document.getElementById("importPasteArea");
+var importTextarea = document.getElementById("importTextarea");
+
 els.importBtn.addEventListener("click", function () {
-  els.importFileInput.click();
+  importPasteArea.style.display = importPasteArea.style.display === "none" ? "block" : "none";
+  if (importPasteArea.style.display === "block") importTextarea.focus();
 });
 
-els.importFileInput.addEventListener("change", function () {
-  var file = els.importFileInput.files[0];
-  if (!file) return;
-
-  var reader = new FileReader();
-  reader.onload = function (e) {
-    try {
-      var config = JSON.parse(e.target.result);
-      applyConfig(config);
-      showToast("Config imported!", "success");
-    } catch {
-      showToast("Invalid config file.", "error");
-    }
-  };
-  reader.readAsText(file);
-  els.importFileInput.value = "";
+document.getElementById("importApplyBtn").addEventListener("click", function () {
+  try {
+    var config = JSON.parse(importTextarea.value);
+    applyConfig(config);
+    importTextarea.value = "";
+    importPasteArea.style.display = "none";
+    showToast("Config imported!", "success");
+  } catch {
+    showToast("Invalid JSON config.", "error");
+  }
 });
 
 // ===== Download File Helper =====

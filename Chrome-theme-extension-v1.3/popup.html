@@ -526,8 +526,11 @@
   <!-- Export / Import -->
   <div class="io-row">
     <button id="exportBtn" class="btn-small" aria-label="Export theme config">Export Config</button>
-    <button id="importBtn" class="btn-small" aria-label="Import theme config">Import Config</button>
-    <input type="file" id="importFileInput" accept=".json" style="display:none;" aria-hidden="true">
+    <button id="importBtn" class="btn-small" aria-label="Paste and import theme config">Import Config</button>
+  </div>
+  <div id="importPasteArea" style="display:none; margin-top:6px;">
+    <textarea id="importTextarea" rows="4" placeholder="Paste exported JSON config here..." style="width:100%;font-size:11px;padding:6px;border:1px solid #ccc;border-radius:4px;resize:vertical;" aria-label="Paste JSON config"></textarea>
+    <button id="importApplyBtn" class="btn-small" style="margin-top:4px;width:100%;">Apply</button>
   </div>
 
   <!-- Theme History -->
