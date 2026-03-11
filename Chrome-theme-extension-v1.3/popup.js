@@ -295,10 +295,18 @@ els.bgImageFile.addEventListener("change", function () {
     }
     var reader = new FileReader();
     reader.onload = function (e) {
-      state.bgImageData = e.target.result;
-      state.bgImageName = file.name;
-      els.fileNameDisplay.textContent = file.name;
-      updatePreview();
+      var img = new Image();
+      img.onload = function () {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.getContext("2d").drawImage(img, 0, 0);
+        state.bgImageData = canvas.toDataURL("image/png");
+        state.bgImageName = file.name;
+        els.fileNameDisplay.textContent = file.name;
+        updatePreview();
+      };
+      img.src = e.target.result;
     };
     reader.readAsDataURL(file);
   }
