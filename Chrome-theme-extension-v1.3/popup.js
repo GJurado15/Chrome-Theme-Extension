@@ -641,7 +641,8 @@ els.importFileInput.addEventListener("change", function () {
   var file = els.importFileInput.files[0];
   if (!file) return;
 
-  if (file.name.endsWith(".json")) {
+  var lowerName = file.name.toLowerCase();
+  if (lowerName.endsWith(".json")) {
     var reader = new FileReader();
     reader.onload = function (ev) {
       try {
@@ -653,19 +654,19 @@ els.importFileInput.addEventListener("change", function () {
       }
     };
     reader.readAsText(file);
-  } else if (file.name.endsWith(".zip")) {
+  } else if (lowerName.endsWith(".zip")) {
     // eslint-disable-next-line no-undef
     JSZip.loadAsync(file).then(function (zip) {
       var configFile = zip.file("theme-config.json");
       if (!configFile) {
-        showToast("No theme-config.json found in zip.", "error");
+        showToast("Re-download the theme to get an importable zip.", "error");
         return;
       }
       configFile.async("string").then(function (text) {
         try {
           var config = JSON.parse(text);
           applyConfig(config);
-          showToast("Config imported from zip!", "success");
+          showToast("Theme imported from zip!", "success");
         } catch {
           showToast("Invalid config in zip.", "error");
         }
