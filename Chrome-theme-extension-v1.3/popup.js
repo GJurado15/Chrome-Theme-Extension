@@ -289,6 +289,11 @@ els.gradDirection.addEventListener("change", updatePreview);
 els.bgImageFile.addEventListener("change", function () {
   var file = els.bgImageFile.files[0];
   if (file) {
+    if (file.size > 2 * 1024 * 1024) {
+      showToast("Image must be under 2MB.", "error");
+      els.bgImageFile.value = "";
+      return;
+    }
     var reader = new FileReader();
     reader.onload = function (e) {
       state.bgImageData = e.target.result;
@@ -671,10 +676,6 @@ els.confirmBtn.addEventListener("click", async function () {
   if (!validate()) return;
 
   var themeName = els.themeName.value || "My Custom Theme";
-
-  // eslint-disable-next-line no-undef
-  var textRGB = ThemeUtils.hexToRgb(els.textColor.value);
-
   var bgType = els.bgType.value;
   var bgBlob = null;
   var solidBgRGB = null;
