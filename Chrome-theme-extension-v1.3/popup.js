@@ -146,7 +146,6 @@ var els = {
   textColor: document.getElementById("textColor"),
   confirmBtn: document.getElementById("confirmBtn"),
   resetBtn: document.getElementById("resetBtn"),
-  exportBtn: document.getElementById("exportBtn"),
   historyToggle: document.getElementById("historyToggle"),
   historyContent: document.getElementById("historyContent"),
   historyList: document.getElementById("historyList"),
@@ -623,17 +622,6 @@ els.clearHistoryBtn.addEventListener("click", function () {
   }
 });
 
-// ===== Export / Import =====
-
-els.exportBtn.addEventListener("click", function () {
-  var config = getCurrentConfig();
-  var json = JSON.stringify(config, null, 2);
-  var blob = new Blob([json], { type: "application/json" });
-  // eslint-disable-next-line no-undef
-  var filename = ThemeUtils.sanitizeFilename(config.name, "theme-config") + ".json";
-  downloadFile(blob, filename);
-  showToast("Config exported!", "success");
-});
 
 
 // ===== Download File Helper =====

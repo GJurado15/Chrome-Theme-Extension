@@ -1,26 +1,30 @@
-var extensionTabId = null;
+var popupWindowId = null;
 
 chrome.action.onClicked.addListener(function () {
-  if (extensionTabId !== null) {
-    chrome.tabs.get(extensionTabId, function (tab) {
-      if (chrome.runtime.lastError || !tab) {
-        openNewTab();
+  if (popupWindowId !== null) {
+    chrome.windows.get(popupWindowId, function (win) {
+      if (chrome.runtime.lastError || !win) {
+        openPopupWindow();
       } else {
-        chrome.tabs.update(extensionTabId, { active: true });
-        chrome.windows.update(tab.windowId, { focused: true });
+        chrome.windows.update(popupWindowId, { focused: true });
       }
     });
   } else {
-    openNewTab();
+    openPopupWindow();
   }
 });
 
-function openNewTab() {
-  chrome.tabs.create({ url: chrome.runtime.getURL("popup.html") }, function (tab) {
-    extensionTabId = tab.id;
+function openPopupWindow() {
+  chrome.windows.create({
+    url: chrome.runtime.getURL("popup.html"),
+    type: "popup",
+    width: 432,
+    height: 780,
+  }, function (win) {
+    popupWindowId = win.id;
   });
 }
 
-chrome.tabs.onRemoved.addListener(function (tabId) {
-  if (tabId === extensionTabId) extensionTabId = null;
+chrome.windows.onRemoved.addListener(function (windowId) {
+  if (windowId === popupWindowId) popupWindowId = null;
 });
