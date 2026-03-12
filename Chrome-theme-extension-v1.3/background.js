@@ -18,7 +18,7 @@ function openPopupWindow() {
   chrome.windows.create({
     url: chrome.runtime.getURL("popup.html"),
     type: "popup",
-    width: 456,
+    width: 480,
     height: 780,
   }, function (win) {
     popupWindowId = win.id;
