@@ -296,6 +296,11 @@ els.bgImageFile.addEventListener("change", function () {
     reader.onload = function (e) {
       var img = new Image();
       img.onload = function () {
+        if (img.width === 0 || img.height === 0) {
+          showToast("Image has no dimensions — file may be corrupt.", "error");
+          els.bgImageFile.value = "";
+          return;
+        }
         var canvas = document.createElement("canvas");
         canvas.width = img.width;
         canvas.height = img.height;
@@ -305,7 +310,15 @@ els.bgImageFile.addEventListener("change", function () {
         els.fileNameDisplay.textContent = file.name;
         updatePreview();
       };
+      img.onerror = function () {
+        showToast("Could not load image — format may not be supported.", "error");
+        els.bgImageFile.value = "";
+      };
       img.src = e.target.result;
+    };
+    reader.onerror = function () {
+      showToast("Could not read file.", "error");
+      els.bgImageFile.value = "";
     };
     reader.readAsDataURL(file);
   }
