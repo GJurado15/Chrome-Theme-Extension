@@ -14,7 +14,7 @@
       width: 420px;
       font-family: 'Segoe UI', Tahoma, sans-serif;
       padding: 16px;
-      background-color: #f9f9f9;
+      background-color: #f0f2f5;
       font-size: 13px;
       color: #333;
       overflow-x: hidden;
@@ -32,7 +32,7 @@
       border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
 
     .preview-frame {
@@ -72,9 +72,31 @@
       transition: background 0.2s, color 0.2s;
     }
 
+    /* ===== Form Sections ===== */
+    .form-section {
+      background: #fff;
+      border: 1px solid #e4e4e4;
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+
+    .form-section-title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #aaa;
+      margin-bottom: 8px;
+    }
+
     /* ===== Form Controls ===== */
     .control-group {
       margin-bottom: 10px;
+    }
+
+    .control-group:last-child {
+      margin-bottom: 0;
     }
 
     label {
@@ -133,10 +155,16 @@
     .color-row {
       display: flex;
       gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .color-row:last-child {
+      margin-bottom: 0;
     }
 
     .color-row .control-group {
       flex: 1;
+      margin-bottom: 0;
     }
 
     /* ===== Gradient Stops ===== */
@@ -181,11 +209,55 @@
       background: #43a047;
     }
 
+    /* ===== Install Stepper ===== */
+    .install-steps {
+      margin: 4px 0 10px;
+    }
+
+    .install-steps-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #444;
+      margin-bottom: 8px;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .step:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-num {
+      min-width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #4285f4;
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-text {
+      font-size: 11px;
+      color: #555;
+      padding-top: 2px;
+      line-height: 1.4;
+    }
+
     /* ===== Buttons ===== */
     .btn-row {
       display: flex;
       gap: 8px;
-      margin-top: 12px;
+      margin-bottom: 6px;
     }
 
     .btn-action {
@@ -217,6 +289,21 @@
       background: #f0f0f0;
     }
 
+    .btn-reset {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      background: transparent;
+      color: #999;
+      cursor: pointer;
+      font-size: 11px;
+    }
+
+    .btn-reset:hover {
+      color: #555;
+      text-decoration: underline;
+    }
+
     .btn-danger {
       padding: 4px 8px;
       border: none;
@@ -231,15 +318,11 @@
       background: #c62828;
     }
 
-    /* ===== Import/Export Row ===== */
+    /* ===== Reset Row ===== */
     .io-row {
       display: flex;
       gap: 6px;
-      margin-top: 8px;
-    }
-
-    .io-row .btn-small {
-      flex: 1;
+      margin-bottom: 4px;
     }
 
     /* ===== Section Headers ===== */
@@ -247,7 +330,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 16px 0 8px;
+      margin: 12px 0 8px;
       padding-bottom: 4px;
       border-bottom: 1px solid #ddd;
     }
@@ -266,18 +349,35 @@
 
     .history-item {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       padding: 6px 8px;
       background: #fff;
       border: 1px solid #e0e0e0;
       border-radius: 4px;
       margin-bottom: 4px;
+      gap: 8px;
+    }
+
+    .history-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      flex-shrink: 0;
+    }
+
+    .history-item-info {
+      flex: 1;
+      min-width: 0;
     }
 
     .history-item-name {
       font-weight: 600;
       font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .history-item-date {
@@ -288,6 +388,7 @@
     .history-item-actions {
       display: flex;
       gap: 4px;
+      flex-shrink: 0;
     }
 
     .history-empty {
@@ -355,21 +456,6 @@
     .collapsible-content.open {
       display: block;
     }
-
-    /* ===== Instructions ===== */
-    .instructions {
-      font-size: 11px;
-      color: #666;
-      margin-top: 12px;
-      background: #eee;
-      padding: 8px;
-      border-radius: 4px;
-    }
-
-    .instructions ol {
-      padding-left: 20px;
-      margin: 5px 0;
-    }
   </style>
 </head>
 
@@ -397,95 +483,117 @@
     </div>
   </div>
 
-  <!-- Preset Themes -->
-  <div class="control-group">
-    <label for="presetSelect">Preset Theme:</label>
-    <select id="presetSelect" aria-label="Choose a preset theme">
-      <option value="">-- Custom --</option>
-      <option value="dark">Dark Mode</option>
-      <option value="ocean">Ocean Breeze</option>
-      <option value="sunset">Sunset Glow</option>
-      <option value="forest">Forest</option>
-      <option value="monochrome">Monochrome</option>
-    </select>
-  </div>
-
-  <!-- Theme Name -->
-  <div class="control-group">
-    <label for="themeName">Theme Name:</label>
-    <input type="text" id="themeName" placeholder="e.g. Midnight Blue" aria-label="Enter theme name">
-  </div>
-
-  <!-- Background Type -->
-  <div class="control-group">
-    <label for="bgType">Background Type:</label>
-    <select id="bgType" aria-label="Select background type">
-      <option value="solid">Solid Color</option>
-      <option value="gradient">Gradient</option>
-      <option value="image">Image Upload</option>
-    </select>
-  </div>
-
-  <!-- Solid Color -->
-  <div id="solidColorGroup" class="control-group">
-    <label for="bgColor">Background Color:</label>
-    <input type="color" id="bgColor" value="#f5f5f5" aria-label="Background color">
-  </div>
-
-  <!-- Gradient -->
-  <div id="gradientColorGroup" class="control-group" style="display: none;">
-    <label for="gradDirection">Gradient Direction:</label>
-    <select id="gradDirection" aria-label="Gradient direction" style="margin-bottom: 6px;">
-      <option value="top-bottom">Top to Bottom</option>
-      <option value="left-right">Left to Right</option>
-      <option value="diagonal-tlbr">Diagonal (Top-Left to Bottom-Right)</option>
-      <option value="diagonal-trbl">Diagonal (Top-Right to Bottom-Left)</option>
-      <option value="radial">Radial (Center Out)</option>
-    </select>
-    <label>Color Stops:</label>
-    <div id="gradientStopsContainer"></div>
-    <button type="button" id="addStopBtn" class="add-stop-btn" aria-label="Add gradient color stop">+ Add Color
-      Stop</button>
-  </div>
-
-  <!-- Image Upload -->
-  <div id="imageUploadGroup" class="control-group" style="display: none;">
-    <label>Background Image:</label>
-    <div class="file-input-container">
-      <label for="bgImageFile" class="btn-small">Choose File</label>
-      <input type="file" id="bgImageFile" accept="image/png,image/jpeg,image/webp,image/gif,image/bmp" style="display:none;">
-      <span id="fileNameDisplay" class="file-name-display">No file chosen</span>
-    </div>
-  </div>
-
-  <!-- Frame & Toolbar Colors -->
-  <div class="color-row">
+  <!-- Section: Theme Identity -->
+  <div class="form-section">
+    <div class="form-section-title">Theme</div>
     <div class="control-group">
-      <label for="frameColor">Frame Color:</label>
-      <input type="color" id="frameColor" value="#4285f4" aria-label="Frame color">
+      <label for="presetSelect">Preset:</label>
+      <select id="presetSelect" aria-label="Choose a preset theme">
+        <option value="">-- Custom --</option>
+        <option value="dark">Dark Mode</option>
+        <option value="ocean">Ocean Breeze</option>
+        <option value="sunset">Sunset Glow</option>
+        <option value="forest">Forest</option>
+        <option value="monochrome">Monochrome</option>
+      </select>
     </div>
     <div class="control-group">
-      <label for="toolbarColor">Toolbar Color:</label>
-      <input type="color" id="toolbarColor" value="#ffffff" aria-label="Toolbar color">
+      <label for="themeName">Name:</label>
+      <input type="text" id="themeName" placeholder="e.g. Midnight Blue" aria-label="Enter theme name">
     </div>
   </div>
 
-  <!-- Tab Colors -->
-  <div class="color-row">
+  <!-- Section: Background -->
+  <div class="form-section">
+    <div class="form-section-title">Background</div>
     <div class="control-group">
-      <label for="activeTabColor">Active Tab:</label>
-      <input type="color" id="activeTabColor" value="#ffffff" aria-label="Active tab color">
+      <label for="bgType">Type:</label>
+      <select id="bgType" aria-label="Select background type">
+        <option value="solid">Solid Color</option>
+        <option value="gradient">Gradient</option>
+        <option value="image">Image Upload</option>
+      </select>
     </div>
-    <div class="control-group">
-      <label for="inactiveTabColor">Inactive Tab:</label>
-      <input type="color" id="inactiveTabColor" value="#d0d0d0" aria-label="Inactive tab color">
+
+    <!-- Solid Color -->
+    <div id="solidColorGroup" class="control-group">
+      <label for="bgColor">Color:</label>
+      <input type="color" id="bgColor" value="#f5f5f5" aria-label="Background color">
+    </div>
+
+    <!-- Gradient -->
+    <div id="gradientColorGroup" class="control-group" style="display: none;">
+      <label for="gradDirection">Direction:</label>
+      <select id="gradDirection" aria-label="Gradient direction" style="margin-bottom: 6px;">
+        <option value="top-bottom">Top to Bottom</option>
+        <option value="left-right">Left to Right</option>
+        <option value="diagonal-tlbr">Diagonal (Top-Left to Bottom-Right)</option>
+        <option value="diagonal-trbl">Diagonal (Top-Right to Bottom-Left)</option>
+        <option value="radial">Radial (Center Out)</option>
+      </select>
+      <label>Color Stops:</label>
+      <div id="gradientStopsContainer"></div>
+      <button type="button" id="addStopBtn" class="add-stop-btn" aria-label="Add gradient color stop">+ Add Color Stop</button>
+    </div>
+
+    <!-- Image Upload -->
+    <div id="imageUploadGroup" class="control-group" style="display: none;">
+      <label>Image:</label>
+      <div class="file-input-container">
+        <label for="bgImageFile" class="btn-small">Choose File</label>
+        <input type="file" id="bgImageFile" accept="image/png,image/jpeg,image/webp,image/gif,image/bmp" style="display:none;">
+        <span id="fileNameDisplay" class="file-name-display">No file chosen</span>
+      </div>
     </div>
   </div>
 
-  <!-- Text Color -->
-  <div class="control-group">
-    <label for="textColor">Text Color:</label>
-    <input type="color" id="textColor" value="#000000" aria-label="Text color">
+  <!-- Section: Colors -->
+  <div class="form-section">
+    <div class="form-section-title">Colors</div>
+    <div class="color-row">
+      <div class="control-group">
+        <label for="frameColor">Frame:</label>
+        <input type="color" id="frameColor" value="#4285f4" aria-label="Frame color">
+      </div>
+      <div class="control-group">
+        <label for="toolbarColor">Toolbar:</label>
+        <input type="color" id="toolbarColor" value="#ffffff" aria-label="Toolbar color">
+      </div>
+    </div>
+    <div class="color-row">
+      <div class="control-group">
+        <label for="activeTabColor">Active Tab:</label>
+        <input type="color" id="activeTabColor" value="#ffffff" aria-label="Active tab color">
+      </div>
+      <div class="control-group">
+        <label for="inactiveTabColor">Inactive Tab:</label>
+        <input type="color" id="inactiveTabColor" value="#d0d0d0" aria-label="Inactive tab color">
+      </div>
+    </div>
+    <div class="color-row">
+      <div class="control-group">
+        <label for="textColor">Text:</label>
+        <input type="color" id="textColor" value="#000000" aria-label="Text color">
+      </div>
+      <div class="control-group"></div>
+    </div>
+  </div>
+
+  <!-- How to Install -->
+  <div class="install-steps">
+    <div class="install-steps-title">How to Install</div>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">Click <strong>Download Theme</strong> and choose an empty folder.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text"><code>chrome://extensions</code> opens automatically.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">Enable <strong>Developer Mode</strong>, click <strong>Load Unpacked</strong>, and select that folder.</div>
+    </div>
   </div>
 
   <!-- Action Buttons -->
@@ -495,30 +603,18 @@
 
   <!-- Secondary Actions -->
   <div class="io-row">
-    <button id="resetBtn" class="btn-small" aria-label="Reset to defaults">Reset</button>
+    <button id="resetBtn" class="btn-reset" aria-label="Reset to defaults">Reset to Defaults</button>
   </div>
 
   <!-- Theme History -->
   <div class="section-header">
-    <h4 id="historyToggle" class="collapsible-toggle" role="button" tabindex="0" aria-expanded="false">Saved Themes
-    </h4>
-    <button id="clearHistoryBtn" class="btn-danger" aria-label="Clear all saved themes">Clear All</button>
+    <h4 id="historyToggle" class="collapsible-toggle" role="button" tabindex="0" aria-expanded="false">Saved Themes</h4>
+    <button id="clearHistoryBtn" class="btn-danger" style="display:none;" aria-label="Clear all saved themes">Clear All</button>
   </div>
   <div id="historyContent" class="collapsible-content">
     <div id="historyList" class="history-list">
       <div class="history-empty">No saved themes yet.</div>
     </div>
-  </div>
-
-  <!-- Instructions -->
-  <div class="instructions">
-    <strong>Next Steps:</strong>
-    <ol>
-      <li>Click <strong>Download Theme</strong> and choose an empty folder.</li>
-      <li>The theme files are saved directly into that folder.</li>
-      <li><code>chrome://extensions</code> opens automatically.</li>
-      <li>Enable <strong>Developer Mode</strong>, click <strong>Load Unpacked</strong>, and select that folder.</li>
-    </ol>
   </div>
 
   <script src="themeUtils.js"></script>

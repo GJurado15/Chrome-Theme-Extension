@@ -547,16 +547,23 @@ function renderHistoryList() {
   loadHistory().then(function (history) {
     if (history.length === 0) {
       els.historyList.innerHTML = '<div class="history-empty">No saved themes yet.</div>';
+      els.clearHistoryBtn.style.display = "none";
       return;
     }
 
+    els.clearHistoryBtn.style.display = "inline-block";
     els.historyList.innerHTML = "";
 
     history.forEach(function (theme, i) {
       var item = document.createElement("div");
       item.className = "history-item";
 
+      var swatch = document.createElement("div");
+      swatch.className = "history-swatch";
+      swatch.style.backgroundColor = theme.frameColor || "#4285f4";
+
       var info = document.createElement("div");
+      info.className = "history-item-info";
       var nameEl = document.createElement("div");
       nameEl.className = "history-item-name";
       nameEl.textContent = theme.name || "Untitled Theme";
@@ -602,6 +609,7 @@ function renderHistoryList() {
 
       actions.appendChild(loadBtn);
       actions.appendChild(deleteBtn);
+      item.appendChild(swatch);
       item.appendChild(info);
       item.appendChild(actions);
       els.historyList.appendChild(item);
