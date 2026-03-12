@@ -7,10 +7,8 @@
   "version": "2.0",
   "description": "Create, preview, and download custom Chrome themes.",
   "action": {
+    "default_popup": "popup.html",
     "default_title": "Create Theme"
-  },
-  "background": {
-    "service_worker": "background.js"
   },
   "permissions": [
     "downloads",
