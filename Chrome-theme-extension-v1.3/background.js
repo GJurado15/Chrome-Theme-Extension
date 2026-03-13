@@ -14,6 +14,9 @@ chrome.action.onClicked.addListener(function () {
   }
 });
 
+/**
+ * Open the extension UI in a dedicated popup window and remember its window ID.
+ */
 function openPopupWindow() {
   chrome.windows.create({
     url: chrome.runtime.getURL("popup.html"),

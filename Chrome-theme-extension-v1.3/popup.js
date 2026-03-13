@@ -196,7 +196,7 @@ function renderGradientStops() {
             renderGradientStops();
             updatePreview();
           };
-        })(i)
+        })(i),
       );
       row.appendChild(removeBtn);
     }
@@ -262,9 +262,11 @@ function updatePreview() {
     }
     var stops = state.gradientStops.join(", ");
     if (dir === "radial") {
-      els.previewContent.style.background = "radial-gradient(circle, " + stops + ")";
+      els.previewContent.style.background =
+        "radial-gradient(circle, " + stops + ")";
     } else {
-      els.previewContent.style.background = "linear-gradient(" + cssDir + ", " + stops + ")";
+      els.previewContent.style.background =
+        "linear-gradient(" + cssDir + ", " + stops + ")";
     }
   } else if (bgType === "image") {
     if (state.bgImageData) {
@@ -277,11 +279,16 @@ function updatePreview() {
 }
 
 // Attach preview listeners to all color inputs
-["frameColor", "toolbarColor", "activeTabColor", "inactiveTabColor", "textColor", "bgColor"].forEach(
-  function (id) {
-    document.getElementById(id).addEventListener("input", updatePreview);
-  }
-);
+[
+  "frameColor",
+  "toolbarColor",
+  "activeTabColor",
+  "inactiveTabColor",
+  "textColor",
+  "bgColor",
+].forEach(function (id) {
+  document.getElementById(id).addEventListener("input", updatePreview);
+});
 els.gradDirection.addEventListener("change", updatePreview);
 
 els.bgImageFile.addEventListener("change", function () {
@@ -311,7 +318,10 @@ els.bgImageFile.addEventListener("change", function () {
         updatePreview();
       };
       img.onerror = function () {
-        showToast("Could not load image — format may not be supported.", "error");
+        showToast(
+          "Could not load image — format may not be supported.",
+          "error",
+        );
         els.bgImageFile.value = "";
       };
       img.src = e.target.result;
@@ -379,13 +389,15 @@ function applyConfig(config) {
   if (config.frameColor) els.frameColor.value = config.frameColor;
   if (config.toolbarColor) els.toolbarColor.value = config.toolbarColor;
   if (config.activeTabColor) els.activeTabColor.value = config.activeTabColor;
-  if (config.inactiveTabColor) els.inactiveTabColor.value = config.inactiveTabColor;
+  if (config.inactiveTabColor)
+    els.inactiveTabColor.value = config.inactiveTabColor;
   if (config.textColor) els.textColor.value = config.textColor;
 
   if (config.bgType) {
     els.bgType.value = config.bgType;
     els.solidGroup.style.display = config.bgType === "solid" ? "block" : "none";
-    els.gradientGroup.style.display = config.bgType === "gradient" ? "block" : "none";
+    els.gradientGroup.style.display =
+      config.bgType === "gradient" ? "block" : "none";
     els.imageGroup.style.display = config.bgType === "image" ? "block" : "none";
   }
 
@@ -481,7 +493,7 @@ function createGradientBlob(colors, direction) {
           0,
           canvas.width / 2,
           canvas.height / 2,
-          Math.max(canvas.width, canvas.height) / 2
+          Math.max(canvas.width, canvas.height) / 2,
         );
         break;
       default:
@@ -546,7 +558,8 @@ function saveToHistory(config) {
 function renderHistoryList() {
   loadHistory().then(function (history) {
     if (history.length === 0) {
-      els.historyList.innerHTML = '<div class="history-empty">No saved themes yet.</div>';
+      els.historyList.innerHTML =
+        '<div class="history-empty">No saved themes yet.</div>';
       els.clearHistoryBtn.style.display = "none";
       return;
     }
@@ -579,7 +592,10 @@ function renderHistoryList() {
       var loadBtn = document.createElement("button");
       loadBtn.className = "btn-small";
       loadBtn.textContent = "Load";
-      loadBtn.setAttribute("aria-label", "Load theme: " + (theme.name || "Untitled"));
+      loadBtn.setAttribute(
+        "aria-label",
+        "Load theme: " + (theme.name || "Untitled"),
+      );
       loadBtn.addEventListener(
         "click",
         (function (t) {
@@ -587,13 +603,16 @@ function renderHistoryList() {
             applyConfig(t);
             showToast('Loaded "' + (t.name || "Untitled") + '"', "info");
           };
-        })(theme)
+        })(theme),
       );
 
       var deleteBtn = document.createElement("button");
       deleteBtn.className = "btn-danger";
       deleteBtn.textContent = "Delete";
-      deleteBtn.setAttribute("aria-label", "Delete theme: " + (theme.name || "Untitled"));
+      deleteBtn.setAttribute(
+        "aria-label",
+        "Delete theme: " + (theme.name || "Untitled"),
+      );
       deleteBtn.addEventListener(
         "click",
         (function (index) {
@@ -604,7 +623,7 @@ function renderHistoryList() {
               showToast("Theme deleted", "info");
             });
           };
-        })(i)
+        })(i),
       );
 
       actions.appendChild(loadBtn);
@@ -643,27 +662,6 @@ els.clearHistoryBtn.addEventListener("click", function () {
   }
 });
 
-
-
-// ===== Download File Helper =====
-
-/**
- * Trigger a download in the browser for a given Blob.
- *
- * @param {Blob} blob
- * @param {string} filename
- */
-function downloadFile(blob, filename) {
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
 // ===== Main Download Handler =====
 
 els.confirmBtn.addEventListener("click", async function () {
@@ -676,7 +674,10 @@ els.confirmBtn.addEventListener("click", async function () {
 
   try {
     if (bgType === "gradient") {
-      bgBlob = await createGradientBlob(state.gradientStops, els.gradDirection.value);
+      bgBlob = await createGradientBlob(
+        state.gradientStops,
+        els.gradDirection.value,
+      );
     } else if (bgType === "image") {
       if (state.bgImageData) {
         bgBlob = dataURLtoBlob(state.bgImageData);
@@ -722,13 +723,17 @@ els.confirmBtn.addEventListener("click", async function () {
   try {
     var dirHandle = await window.showDirectoryPicker({ mode: "readwrite" });
 
-    var manifestHandle = await dirHandle.getFileHandle("manifest.json", { create: true });
+    var manifestHandle = await dirHandle.getFileHandle("manifest.json", {
+      create: true,
+    });
     var manifestWritable = await manifestHandle.createWritable();
     await manifestWritable.write(JSON.stringify(manifest, null, 2));
     await manifestWritable.close();
 
     if (bgBlob) {
-      var bgHandle = await dirHandle.getFileHandle("background.png", { create: true });
+      var bgHandle = await dirHandle.getFileHandle("background.png", {
+        create: true,
+      });
       var bgWritable = await bgHandle.createWritable();
       await bgWritable.write(bgBlob);
       await bgWritable.close();
