@@ -1,0 +1,33 @@
+var popupWindowId = null;
+
+chrome.action.onClicked.addListener(function () {
+  if (popupWindowId !== null) {
+    chrome.windows.get(popupWindowId, function (win) {
+      if (chrome.runtime.lastError || !win) {
+        openPopupWindow();
+      } else {
+        chrome.windows.update(popupWindowId, { focused: true });
+      }
+    });
+  } else {
+    openPopupWindow();
+  }
+});
+
+/**
+ * Open the extension UI in a dedicated popup window and remember its window ID.
+ */
+function openPopupWindow() {
+  chrome.windows.create({
+    url: chrome.runtime.getURL("popup.html"),
+    type: "popup",
+    width: 480,
+    height: 780,
+  }, function (win) {
+    popupWindowId = win.id;
+  });
+}
+
+chrome.windows.onRemoved.addListener(function (windowId) {
+  if (windowId === popupWindowId) popupWindowId = null;
+});
