@@ -12,49 +12,29 @@ var state = {
 };
 
 /**
- * Theme configuration object used throughout the popup UI,
- * for export/import, theme generation, and history storage.
+ * Theme configuration object shape for import/export/history.
  *
  * @typedef {Object} ThemeConfig
- * @property {string} name - Display name of the theme.
- * @property {"solid"|"gradient"|"image"} bgType - Background type.
- * @property {string} bgColor - Solid background color (hex).
- * @property {string[]} gradColors - Gradient color stops.
- * @property {string} gradDirection - Gradient direction.
- * @property {string} frameColor - Browser frame color.
- * @property {string} toolbarColor - Toolbar background color.
- * @property {string} activeTabColor - Active tab color.
- * @property {string} inactiveTabColor - Inactive tab color.
- * @property {string} textColor - Text/icon color.
- * @property {string|null} bgImageData - Base64 image data.
- * @property {string|null} bgImageName - Background image filename.
- * @property {string} [savedAt] - Timestamp used for history entries.
- */
-
-/**
- * Theme preset structure used by the preset dropdown.
- *
- * @typedef {Object} PresetTheme
  * @property {string} name
+ * @property {"solid"|"gradient"|"image"} bgType
+ * @property {string} bgColor
+ * @property {string[]} gradColors
+ * @property {string} gradDirection
  * @property {string} frameColor
  * @property {string} toolbarColor
- * @property {string} textColor
  * @property {string} activeTabColor
  * @property {string} inactiveTabColor
- * @property {"solid"|"gradient"} bgType
- * @property {string} [bgColor]
- * @property {string[]} [gradColors]
- * @property {string} [gradDirection]
+ * @property {string} textColor
+ * @property {string|null} bgImageData
+ * @property {string|null} bgImageName
+ * @property {string} [savedAt]
  */
 
 /**
- * Convert a Base64 data URL into a Blob object.
+ * Convert a base64 data URL to a Blob.
  *
- * Used when packaging uploaded background images into
- * the downloadable theme ZIP.
- *
- * @param {string} dataurl - Data URL string (e.g. "data:image/png;base64,...").
- * @returns {Blob} Converted binary Blob.
+ * @param {string} dataurl - Data URL (e.g. "data:image/png;base64,...")
+ * @returns {Blob}
  */
 function dataURLtoBlob(dataurl) {
   var arr = dataurl.split(","),
@@ -87,7 +67,7 @@ function showToast(message, type) {
 
 // ===== Preset Themes =====
 
-/** @type {Record<string, PresetTheme>} */
+/** @type {Record<string, any>} */
 var PRESETS = {
   dark: {
     name: "Dark Mode",
@@ -216,7 +196,7 @@ function renderGradientStops() {
             renderGradientStops();
             updatePreview();
           };
-        })(i),
+        })(i)
       );
       row.appendChild(removeBtn);
     }
@@ -282,11 +262,9 @@ function updatePreview() {
     }
     var stops = state.gradientStops.join(", ");
     if (dir === "radial") {
-      els.previewContent.style.background =
-        "radial-gradient(circle, " + stops + ")";
+      els.previewContent.style.background = "radial-gradient(circle, " + stops + ")";
     } else {
-      els.previewContent.style.background =
-        "linear-gradient(" + cssDir + ", " + stops + ")";
+      els.previewContent.style.background = "linear-gradient(" + cssDir + ", " + stops + ")";
     }
   } else if (bgType === "image") {
     if (state.bgImageData) {
@@ -299,16 +277,11 @@ function updatePreview() {
 }
 
 // Attach preview listeners to all color inputs
-[
-  "frameColor",
-  "toolbarColor",
-  "activeTabColor",
-  "inactiveTabColor",
-  "textColor",
-  "bgColor",
-].forEach(function (id) {
-  document.getElementById(id).addEventListener("input", updatePreview);
-});
+["frameColor", "toolbarColor", "activeTabColor", "inactiveTabColor", "textColor", "bgColor"].forEach(
+  function (id) {
+    document.getElementById(id).addEventListener("input", updatePreview);
+  }
+);
 els.gradDirection.addEventListener("change", updatePreview);
 
 els.bgImageFile.addEventListener("change", function () {
@@ -338,10 +311,7 @@ els.bgImageFile.addEventListener("change", function () {
         updatePreview();
       };
       img.onerror = function () {
-        showToast(
-          "Could not load image — format may not be supported.",
-          "error",
-        );
+        showToast("Could not load image — format may not be supported.", "error");
         els.bgImageFile.value = "";
       };
       img.src = e.target.result;
@@ -400,27 +370,22 @@ function getCurrentConfig() {
 }
 
 /**
- * Apply a theme configuration or preset to the popup UI.
+ * Apply a ThemeConfig (or preset-like object) to the UI.
  *
- * Updates form controls and preview elements so the interface
- * reflects the provided theme settings.
- *
- * @param {ThemeConfig|PresetTheme} config - Theme configuration or preset to apply.
+ * @param {Object} config - Config/preset object. May be a ThemeConfig or a preset shape.
  */
 function applyConfig(config) {
   if (config.name !== undefined) els.themeName.value = config.name;
   if (config.frameColor) els.frameColor.value = config.frameColor;
   if (config.toolbarColor) els.toolbarColor.value = config.toolbarColor;
   if (config.activeTabColor) els.activeTabColor.value = config.activeTabColor;
-  if (config.inactiveTabColor)
-    els.inactiveTabColor.value = config.inactiveTabColor;
+  if (config.inactiveTabColor) els.inactiveTabColor.value = config.inactiveTabColor;
   if (config.textColor) els.textColor.value = config.textColor;
 
   if (config.bgType) {
     els.bgType.value = config.bgType;
     els.solidGroup.style.display = config.bgType === "solid" ? "block" : "none";
-    els.gradientGroup.style.display =
-      config.bgType === "gradient" ? "block" : "none";
+    els.gradientGroup.style.display = config.bgType === "gradient" ? "block" : "none";
     els.imageGroup.style.display = config.bgType === "image" ? "block" : "none";
   }
 
@@ -470,12 +435,9 @@ els.resetBtn.addEventListener("click", function () {
 // ===== Validation =====
 
 /**
- * Validate the current UI configuration before generating a theme.
+ * Validate inputs before generating theme output.
  *
- * Ensures required fields are populated and background
- * settings are valid for the selected background type.
- *
- * @returns {boolean} True if the configuration is valid.
+ * @returns {boolean}
  */
 function validate() {
   if (els.bgType.value === "image" && !state.bgImageData) {
@@ -488,14 +450,11 @@ function validate() {
 // ===== Gradient Blob Creation =====
 
 /**
- * Generate a PNG image Blob representing a gradient background.
+ * Create a PNG gradient background using Canvas and return it as a Blob.
  *
- * This is used when exporting gradient backgrounds so they can
- * be included as the New Tab Page background image.
- *
- * @param {string[]} colors - Array of hex color stops.
- * @param {string} direction - Gradient direction.
- * @returns {Promise<Blob>} Resolves with the generated PNG Blob.
+ * @param {string[]} colors
+ * @param {string} direction
+ * @returns {Promise<Blob>}
  */
 function createGradientBlob(colors, direction) {
   return new Promise(function (resolve) {
@@ -522,7 +481,7 @@ function createGradientBlob(colors, direction) {
           0,
           canvas.width / 2,
           canvas.height / 2,
-          Math.max(canvas.width, canvas.height) / 2,
+          Math.max(canvas.width, canvas.height) / 2
         );
         break;
       default:
@@ -587,8 +546,7 @@ function saveToHistory(config) {
 function renderHistoryList() {
   loadHistory().then(function (history) {
     if (history.length === 0) {
-      els.historyList.innerHTML =
-        '<div class="history-empty">No saved themes yet.</div>';
+      els.historyList.innerHTML = '<div class="history-empty">No saved themes yet.</div>';
       els.clearHistoryBtn.style.display = "none";
       return;
     }
@@ -621,10 +579,7 @@ function renderHistoryList() {
       var loadBtn = document.createElement("button");
       loadBtn.className = "btn-small";
       loadBtn.textContent = "Load";
-      loadBtn.setAttribute(
-        "aria-label",
-        "Load theme: " + (theme.name || "Untitled"),
-      );
+      loadBtn.setAttribute("aria-label", "Load theme: " + (theme.name || "Untitled"));
       loadBtn.addEventListener(
         "click",
         (function (t) {
@@ -632,16 +587,13 @@ function renderHistoryList() {
             applyConfig(t);
             showToast('Loaded "' + (t.name || "Untitled") + '"', "info");
           };
-        })(theme),
+        })(theme)
       );
 
       var deleteBtn = document.createElement("button");
       deleteBtn.className = "btn-danger";
       deleteBtn.textContent = "Delete";
-      deleteBtn.setAttribute(
-        "aria-label",
-        "Delete theme: " + (theme.name || "Untitled"),
-      );
+      deleteBtn.setAttribute("aria-label", "Delete theme: " + (theme.name || "Untitled"));
       deleteBtn.addEventListener(
         "click",
         (function (index) {
@@ -652,7 +604,7 @@ function renderHistoryList() {
               showToast("Theme deleted", "info");
             });
           };
-        })(i),
+        })(i)
       );
 
       actions.appendChild(loadBtn);
@@ -691,16 +643,15 @@ els.clearHistoryBtn.addEventListener("click", function () {
   }
 });
 
+
+
 // ===== Download File Helper =====
 
 /**
- * Download a file using the browser download API.
+ * Trigger a download in the browser for a given Blob.
  *
- * NOTE: This helper is currently not used by the main
- * theme export workflow which relies on the File System API.
- *
- * @param {Blob} blob - File data.
- * @param {string} filename - Download filename.
+ * @param {Blob} blob
+ * @param {string} filename
  */
 function downloadFile(blob, filename) {
   var url = URL.createObjectURL(blob);
@@ -725,10 +676,7 @@ els.confirmBtn.addEventListener("click", async function () {
 
   try {
     if (bgType === "gradient") {
-      bgBlob = await createGradientBlob(
-        state.gradientStops,
-        els.gradDirection.value,
-      );
+      bgBlob = await createGradientBlob(state.gradientStops, els.gradDirection.value);
     } else if (bgType === "image") {
       if (state.bgImageData) {
         bgBlob = dataURLtoBlob(state.bgImageData);
@@ -774,17 +722,13 @@ els.confirmBtn.addEventListener("click", async function () {
   try {
     var dirHandle = await window.showDirectoryPicker({ mode: "readwrite" });
 
-    var manifestHandle = await dirHandle.getFileHandle("manifest.json", {
-      create: true,
-    });
+    var manifestHandle = await dirHandle.getFileHandle("manifest.json", { create: true });
     var manifestWritable = await manifestHandle.createWritable();
     await manifestWritable.write(JSON.stringify(manifest, null, 2));
     await manifestWritable.close();
 
     if (bgBlob) {
-      var bgHandle = await dirHandle.getFileHandle("background.png", {
-        create: true,
-      });
+      var bgHandle = await dirHandle.getFileHandle("background.png", { create: true });
       var bgWritable = await bgHandle.createWritable();
       await bgWritable.write(bgBlob);
       await bgWritable.close();
